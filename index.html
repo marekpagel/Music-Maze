@@ -60,9 +60,10 @@
 				//This is needed for texture loading from the web
 				textureLoader.crossOrigin = 'Anonymous';
 				
-				left_turn([0,0,0]);
-				left_turn([-100,0,60],100,[0,Math.PI/2,0]);
-				corridor([-40,0,80], 100, [0,0,0]);
+				left_turn([0,0,0], 100, [0,0,0], true);
+				left_turn([-100,0,60],100,[0,Math.PI/2,0], false);
+				right_turn([-40,0,80], 100, [0,0,0], false);
+				corridor([-20,0,140], 100, [0,Math.PI/2,0], false);
 				
 				//camera.position.set(-50,0,200);
 				//camera.rotation.set(0,Math.PI/2,0);
@@ -123,6 +124,8 @@
 				requestAnimationFrame(draw);
 				
 				parseControls(100);
+				
+				console.log(camera.position);
 
 				renderer.render(scene, camera); //We render our scene with our camera
 			}
@@ -148,10 +151,11 @@
 				}
 			}
 
-			function left_turn(position, length, rotation) {
+			function right_turn(position, length, rotation, with_backwall) {
 			    var position = position == undefined ? [0,0,100] : position;
 			    var length   = length   == undefined ? 100       : length;
 			    var rotation = rotation == undefined ? [0,0,0]   : rotation;
+			    var with_backwall = with_backwall == undefined ? true : with_backwall;
 			
 			    var x = position[0]; var y = position[1]; var z = position[2];
 			    var xr = rotation[0]; var yr = rotation[1]; var zr = rotation[2];
@@ -159,24 +163,31 @@
 				var mesh = new THREE.Mesh();
 				var halfPi = Math.PI / 2;
 				
-				var leftWall1 = createWall(0x555555, 20, 20);
-				leftWall1.position.set(-10, 0, 80);
-				leftWall1.rotation.set(0, halfPi, 0);
-				mesh.add(leftWall1);
+				var leftWall = createWall(0x555555, length, 20);
+				leftWall.position.set(-10, 0, 40);
+				leftWall.rotation.set(0, halfPi, 0);
+				mesh.add(leftWall);
+				
+				var rightWall1 = createWall(0x555555, 20, 20);
+				rightWall1.position.set(10, 0, 80);
+				rightWall1.rotation.set(0, -halfPi, 0);
+				mesh.add(rightWall1);
 
-				var leftWall2 = createWall(0x555555, 60, 20);
-				leftWall2.position.set(-10, 0, 20);
-				leftWall2.rotation.set(0, halfPi, 0);
-				mesh.add(leftWall2);
+				var rightWall2 = createWall(0x555555, 60, 20);
+				rightWall2.position.set(10, 0, 20);
+				rightWall2.rotation.set(0, -halfPi, 0);
+				mesh.add(rightWall2);
 				
-				var rightWall = createWall(0x333333, 100, 20);
-				rightWall.position.set(10, 0, 40);
-				rightWall.rotation.set(0, -halfPi, 0);
-				mesh.add(rightWall);
+				//var rightWall = createWall(0x333333, 100, 20);
+				//rightWall.position.set(10, 0, 40);
+				//rightWall.rotation.set(0, -halfPi, 0);
+				//mesh.add(rightWall);
 				
-				var backWall = createWall(0x444444, 20, 20);
-				backWall.position.set(0, 0, -10);
-				mesh.add(backWall);
+				if (with_backwall) {
+				    var backWall = createWall(0x444444, 20, 20);
+				    backWall.position.set(0, 0, -10);
+				    mesh.add(backWall);
+				}
 				
 				var ceiling = createWall(0x111111, 20, 100);
 				ceiling.position.set(0, 10, 40);
@@ -202,7 +213,64 @@
 				//camera.position.set(-20,0,150);
 			}
 
-			function corridor(position, length, rotation) {
+			function left_turn(position, length, rotation, with_backwall) {
+			    var position = position == undefined ? [0,0,100] : position;
+			    var length   = length   == undefined ? 100       : length;
+			    var rotation = rotation == undefined ? [0,0,0]   : rotation;
+			    var with_backwall = with_backwall == undefined ? true : with_backwall;
+			
+			    var x = position[0]; var y = position[1]; var z = position[2];
+			    var xr = rotation[0]; var yr = rotation[1]; var zr = rotation[2];
+
+				var mesh = new THREE.Mesh();
+				var halfPi = Math.PI / 2;
+				
+				var leftWall1 = createWall(0x555555, 20, 20);
+				leftWall1.position.set(-10, 0, 80);
+				leftWall1.rotation.set(0, halfPi, 0);
+				mesh.add(leftWall1);
+
+				var leftWall2 = createWall(0x555555, 60, 20);
+				leftWall2.position.set(-10, 0, 20);
+				leftWall2.rotation.set(0, halfPi, 0);
+				mesh.add(leftWall2);
+				
+				var rightWall = createWall(0x333333, 100, 20);
+				rightWall.position.set(10, 0, 40);
+				rightWall.rotation.set(0, -halfPi, 0);
+				mesh.add(rightWall);
+				
+				if (with_backwall) {
+				    var backWall = createWall(0x444444, 20, 20);
+				    backWall.position.set(0, 0, -10);
+				    mesh.add(backWall);
+				}
+				
+				var ceiling = createWall(0x111111, 20, 100);
+				ceiling.position.set(0, 10, 40);
+				ceiling.rotation.set(halfPi, 0, 0);
+				mesh.add(ceiling);
+				
+				var floor = createWall(0x222222, 20, 100);
+				floor.position.set(0, -10, 40);
+				floor.rotation.set(-halfPi, 0, 0);
+				
+				//We load this texture for the floor. Overriding the material assigned to us in the createWall
+				floor.material = new THREE.MeshLambertMaterial({
+					map: textureLoader.load('http://cglearn.codelight.eu/files/course/7/textures/wallTexture2.jpg', onTextureLoaded)
+				});
+				mesh.add(floor);
+
+				mesh.position.set(x,y,z);
+				mesh.rotation.set(xr,yr,zr);
+				
+				scene.add(mesh);
+				
+				//corridor([x-100, y, z+60], length, [0,halfPi,0]);
+				//camera.position.set(-20,0,150);
+			}
+
+			function corridor(position, length, rotation, with_backwall) {
 			    var position = position == undefined ? [0,0,100] : position;
 			    var length   = length   == undefined ? 100       : length;
 			    var rotation = rotation == undefined ? [0,0,0]   : rotation;
@@ -223,9 +291,11 @@
 				rightWall.rotation.set(0, -halfPi, 0);
 				corridor.add(rightWall);
 				
-				var backWall = createWall(0x444444, 20, 20);
-				backWall.position.set(0, 0, -10);
-				corridor.add(backWall);
+				if (with_backwall) {
+				    var backWall = createWall(0x444444, 20, 20);
+				    backWall.position.set(0, 0, -10);
+				    corridor.add(backWall);
+				}
 				
 				var ceiling = createWall(0x111111, 20, length);
 				ceiling.position.set(0, 10, 40);
