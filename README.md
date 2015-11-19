@@ -15,11 +15,11 @@ Click [here](http://marekpagel.github.io/Music-Maze/) for live demo.
 
 ## TODO
 
-* [] Calculate & return connector coordinates
-* [] Randomize connector spots
-* [] Load & analyze music
-* [] Transform music analysis into probability distribution
-* [] Continuously generate maze on the fly
-* [] Implement collision control and avoidance
-* [] Improve graphics, UI
-* [] Docs
+* [ ] Calculate & return connector coordinates
+* [ ] Randomize connector spots
+* [ ] Load & analyze music
+* [ ] Transform music analysis into probability distribution
+* [ ] Continuously generate maze on the fly
+* [ ] Implement collision control and avoidance
+* [ ] Improve graphics, UI
+* [ ] Docs
