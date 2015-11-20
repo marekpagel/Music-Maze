@@ -54,6 +54,8 @@ var DebugCamera = function(camera, keyboard) {
 		    if (self.keyboard.pressed("down")){
 			    self.camera.position.sub(forward);
 		    }
+		    
+		    console.log(camera.position);
 	    }
 	
 	};

@@ -44,7 +44,14 @@
 				
 				//maze.next([0,0,0],[0,0,0], [1/3, 1/3, 1/3]);
 				
-				maze.next([0,0,0],[0,0,0], [1, 0, 0]);
+				var positions = maze.next([0,0,0],[0,0,0], [1, 0, 0]);
+				// TODO choose next position at random
+				//      then move camera to that position
+				//      then figure out prob distribution for the 3 connectors (left, right, front)
+				//      (based on some music analysis procedure)
+				//      then pass that to maze.next(); and recurse
+				// TODO probably should move this proc into draw();
+
 				maze.next([-100,0,60],[0,Math.PI/2,0], [1, 0, 0]);
 				maze.next([-40,0,80],[0,0,0], [0, 1, 0]);
 				maze.next([-20,0,140],[0,Math.PI/2,0], [0, 0, 0]);

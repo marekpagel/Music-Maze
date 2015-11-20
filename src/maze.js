@@ -43,6 +43,7 @@ var Maze = function(scene, textureLoader) {
 				leftWall2.rotation.set(0, halfPi, 0);
 				mesh.add(leftWall2);
 				
+				//connectors.push([position[0]-self.len,position[1],position[2]+3*self.len/5]);
 				connectors.push([]);
 			} else {
 			    var leftWall = this._createWall(self.wallColor[0], self.len, self.width);
