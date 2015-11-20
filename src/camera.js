@@ -1,30 +1,47 @@
 var PathCamera = function(camera) {
     this.camera = camera;
+    this.rotationSteps = 15;
     
     return {
-        /*
-	    function moveCamera() {
-            i++;
-	        if (i >= 35) { return; }
-	
+        move: function(position, rotation) {
+            var dx = position[0] - self.camera.position.x;
+            var dy = position[1] - self.camera.position.y;
+            var dz = position[2] - self.camera.position.z;
+        
+            var steps = Math.max(Math.abs(dz), Math.max(Math.abs(dx), Math.abs(dy)));
+        
+            this._move(steps, [dx/steps,dy/steps,dz/steps], rotation);
+        },
+        
+        _move: function(steps, delta, rotation) {
+            if (steps == 0) {
+                this._rotate(self.rotationSteps, rotation);
+                return;
+            }
+            
+            self.camera.position.x += delta[0];
+            self.camera.position.y += delta[1];
+            self.camera.position.z += delta[2];
+        
+            var caller = this;
 	        setTimeout(function() {
-	            camera.position.z = camera.position.z -= 1;
-	            
-	            moveCamera();
-	        }, 100);
-	    }
-	
-	    function rotateCamera() {
-            j++;
-	        if (j >= 17) { return; }
-	
+	            caller._move(steps-1, delta, rotation);
+	        }, 50);
+        },
+        
+        /**
+         * Assuming 45 degree turns at the moment
+         */
+        _rotate: function(steps, angle) {
+            if (steps == 0) return;
+        
+            camera.rotation.y += angle / self.rotationSteps;
+            
+            var caller = this;
 	        setTimeout(function() {
-	            camera.rotation.y += Math.PI / 30;
-	            
-	            rotateCamera();
-	        }, 100);
-	    }
-	    */
+	            caller._rotate(steps-1, angle);
+	        }, 50);
+        }
 	};
 };
 

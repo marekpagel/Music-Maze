@@ -8,7 +8,7 @@
 		<script type="text/javascript" src="src/camera.js"></script>
 		<script type="text/javascript">
 
-			var renderer, scene, camera, maze, cameraControls;
+			var renderer, scene, camera, maze, cameraControls, debugCameraControls;
 
 			function toRad(degree) {
 				return Math.PI * 2 * degree / 360;
@@ -35,7 +35,10 @@
 				camera.position.set(0,0,95);
 				camera.up = new THREE.Vector3(0,1,0);
 				
-				cameraControls = DebugCamera(camera, new THREEx.KeyboardState());
+				debugCameraControls = DebugCamera(camera, new THREEx.KeyboardState());
+
+				cameraControls = PathCamera(camera);
+				cameraControls.move([0,0,60], Math.PI/2);
 				
 				var textureLoader = new THREE.TextureLoader();
 				textureLoader.crossOrigin = 'Anonymous';
@@ -62,7 +65,8 @@
 			function draw() {
 				requestAnimationFrame(draw);
 				
-				cameraControls.move();
+				//cameraControls.move();
+				//debugCameraControls.move();
 				
 				renderer.render(scene, camera);
 			}
