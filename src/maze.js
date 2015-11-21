@@ -1,4 +1,6 @@
 var Maze = function(scene, textureLoader) {
+    this.imgServer = 'https://github.com/marekpagel/Music-Maze';
+
     this.scene = scene;
     this.textureLoader = textureLoader;
 
@@ -8,7 +10,7 @@ var Maze = function(scene, textureLoader) {
     this.wallColor    = [0x555555, 0x333333];
     this.ceilingColor = 0x111111;
     
-    this.floorTexture = textureLoader.load('http://cglearn.codelight.eu/files/course/7/textures/wallTexture2.jpg', function(texture) {
+    this.floorTexture = textureLoader.load(this.imgServer + '/img/wallTexture2.jpg', function(texture) {
 	    texture.wrapS = THREE.RepeatWrapping;
 	    texture.wrapT = THREE.RepeatWrapping;
 	    texture.repeat.set(2, 10);
