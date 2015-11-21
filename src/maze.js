@@ -110,8 +110,16 @@ var Maze = function(scene, textureLoader) {
 		        var backWall = this._createWall(0x444444, self.width, self.width);
 		        backWall.position.set(0, 0, -10);
 			    backWall.material = new THREE.MeshLambertMaterial({ map: self.wallTexture });
+			    
+			    // awkward fix for weird positioning we have atm
+		        // TODO: remove this once coordinates are properly handled
+		        var backWall2 = this._createWall(0x444444, self.width, self.width);
+		        backWall2.position.set(0,0,90);
+		        backWall2.rotation.set(0, 2*halfPi, 0);
+			    backWall2.material = new THREE.MeshLambertMaterial({ map: self.wallTexture });
 		        
 		        mesh.add(backWall);
+		        mesh.add(backWall2);
 		    }
 			
 			var ceiling = this._createWall(self.ceilingColor, self.width, self.len);
