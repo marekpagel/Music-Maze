@@ -13,6 +13,8 @@ TODO
 
 Click [here](http://marekpagel.github.io/Music-Maze/) for live demo.
 
+![](http://fat.gfycat.com/CriminalShinyBaiji.gif)
+
 ## TODO
 
 * [ ] Calculate & return connector coordinates
