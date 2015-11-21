@@ -36,6 +36,8 @@ var Maze = function(scene, textureLoader) {
          * Draw next iteration of the maze at a given position
          * prob is an array that decides probabilities of left, right and straight connectors (can have all 3, at least 1)
          *
+         * // TODO fix weird behaviour of left vs right wall when dealing with rotated local space
+         *
          * returns array of open connector points
          */
         next: function(position, rotation, prob) {
