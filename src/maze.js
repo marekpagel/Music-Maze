@@ -1,5 +1,5 @@
 var Maze = function(scene, textureLoader) {
-    this.imgServer = 'https://raw.githubusercontent.com/marekpagel/Music-Maze/master/img';
+    this.imgServer = 'https://raw.githubusercontent.com/marekpagel/Music-Maze/master/img/';
 
     this.scene = scene;
     this.textureLoader = textureLoader;
