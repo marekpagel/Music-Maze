@@ -36,9 +36,6 @@
 				camera.up = new THREE.Vector3(0,1,0);
 				
 				debugCameraControls = DebugCamera(camera, new THREEx.KeyboardState());
-
-				cameraControls = PathCamera(camera);
-				//cameraControls.move([0,0,60], Math.PI/2);
 				
 				var textureLoader = new THREE.TextureLoader();
 				textureLoader.crossOrigin = 'Anonymous';
@@ -60,6 +57,15 @@
 				maze.next([-20,0,140],[0,Math.PI/2,0], [0, 0, 0]);
 				
 				draw();
+
+				cameraControls = PathCamera(camera);
+
+				var move4 = function() { cameraControls.move([45,0,140], 0); };
+				var move3 = function() { cameraControls.move([-40,0,140], Math.PI/2, move4); };
+				var move2 = function() { cameraControls.move([-40,0,60], Math.PI/2, move3); };
+				var move1 = function() { cameraControls.move([0,0,60], Math.PI/2, move2); };
+
+				move1();
 			}
 			
 			function draw() {

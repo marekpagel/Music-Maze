@@ -1,21 +1,31 @@
 var PathCamera = function(camera) {
     this.camera = camera;
     this.rotationSteps = 15;
+    this.moveTimeout = 25;
+    this.rotationTimeout = 35;
     
     return {
-        move: function(position, rotation) {
+        move: function(position, rotation, callback) {
             var dx = position[0] - self.camera.position.x;
             var dy = position[1] - self.camera.position.y;
             var dz = position[2] - self.camera.position.z;
         
             var steps = Math.max(Math.abs(dz), Math.max(Math.abs(dx), Math.abs(dy)));
         
-            this._move(steps, [dx/steps,dy/steps,dz/steps], rotation);
+            var caller = this;
+            var rotate = function() {
+                caller._rotate(self.rotationSteps, rotation, callback);
+            };
+        
+            this._move(steps, [dx/steps,dy/steps,dz/steps], rotate);
         },
         
-        _move: function(steps, delta, rotation) {
+        _move: function(steps, delta, callback) {
             if (steps == 0) {
-                this._rotate(self.rotationSteps, rotation);
+                if (!(callback == undefined)) {
+                    callback();
+                }
+
                 return;
             }
             
@@ -25,22 +35,28 @@ var PathCamera = function(camera) {
         
             var caller = this;
 	        setTimeout(function() {
-	            caller._move(steps-1, delta, rotation);
-	        }, 50);
+	            caller._move(steps-1, delta, callback);
+	        }, self.moveTimeout);
         },
         
         /**
          * Assuming 45 degree turns at the moment
          */
-        _rotate: function(steps, angle) {
-            if (steps == 0) return;
+        _rotate: function(steps, angle, callback) {
+            if (steps == 0) {
+                if (!(callback == undefined)) {
+                    callback();
+                }
+                
+                return;
+            }
         
             camera.rotation.y += angle / self.rotationSteps;
             
             var caller = this;
 	        setTimeout(function() {
-	            caller._rotate(steps-1, angle);
-	        }, 50);
+	            caller._rotate(steps-1, angle, callback);
+	        }, self.rotationTimeout);
         }
 	};
 };
@@ -72,7 +88,7 @@ var DebugCamera = function(camera, keyboard) {
 			    self.camera.position.sub(forward);
 		    }
 		    
-		    //console.log(camera.position);
+		    console.log(camera.position);
 	    }
 	
 	};
