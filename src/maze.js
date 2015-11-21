@@ -1,5 +1,5 @@
 var Maze = function(scene, textureLoader) {
-    this.imgServer = 'https://raw.githubusercontent.com/marekpagel/Music-Maze/master';
+    this.imgServer = 'https://raw.githubusercontent.com/marekpagel/Music-Maze/master/img';
 
     this.scene = scene;
     this.textureLoader = textureLoader;
@@ -10,12 +10,26 @@ var Maze = function(scene, textureLoader) {
     this.wallColor    = [0x555555, 0x333333];
     this.ceilingColor = 0x111111;
     
-    this.floorTexture = textureLoader.load(this.imgServer + '/img/wallTexture2.jpg', function(texture) {
+    this.ceilingTexture = textureLoader.load(this.imgServer + "ceiling.jpg", function(texture) {
 	    texture.wrapS = THREE.RepeatWrapping;
 	    texture.wrapT = THREE.RepeatWrapping;
 	    texture.repeat.set(2, 10);
 	    texture.needsUpdate = true;
 	});
+	
+	this.wallTexture = textureLoader.load(this.imgServer + "wall.jpg", function(texture) {
+	    texture.wrapS = THREE.RepeatWrapping;
+	    texture.wrapT = THREE.RepeatWrapping;
+	    texture.needsUpdate = true;
+	});
+	
+	this.floorTexture = textureLoader.load(this.imgServer + "floor.jpg", function(texture) {
+	    texture.wrapS = THREE.RepeatWrapping;
+	    texture.wrapT = THREE.RepeatWrapping;
+	    
+	    texture.repeat.set(1, 4);
+	    texture.needsUpdate = true;
+	})
 
     return {
         /**
@@ -38,11 +52,15 @@ var Maze = function(scene, textureLoader) {
 				var leftWall1 = this._createWall(self.wallColor[0], self.len/5, self.width);
 				leftWall1.position.set(-10, 0, 4*self.len/5);
 				leftWall1.rotation.set(0, halfPi, 0);
+				leftWall1.material = new THREE.MeshLambertMaterial({ map: self.wallTexture });
+				
 				mesh.add(leftWall1);
 
 				var leftWall2 = this._createWall(self.wallColor[0], 3*self.len/5, self.width);
 				leftWall2.position.set(-10, 0, self.len/5);
 				leftWall2.rotation.set(0, halfPi, 0);
+				leftWall2.material = new THREE.MeshLambertMaterial({ map: self.wallTexture });
+				
 				mesh.add(leftWall2);
 				
 				//connectors.push([position[0]-self.len,position[1],position[2]+3*self.len/5]);
@@ -51,6 +69,8 @@ var Maze = function(scene, textureLoader) {
 			    var leftWall = this._createWall(self.wallColor[0], self.len, self.width);
 			    leftWall.position.set(-10, 0, 40);
 			    leftWall.rotation.set(0, halfPi, 0);
+				leftWall.material = new THREE.MeshLambertMaterial({ map: self.wallTexture });
+			    
 			    mesh.add(leftWall);
 			}
 			
@@ -62,11 +82,15 @@ var Maze = function(scene, textureLoader) {
 				var rightWall1 = this._createWall(self.wallColor[1], 1*self.len/5, self.width);
 				rightWall1.position.set(10, 0, 4*self.len/5);
 				rightWall1.rotation.set(0, -halfPi, 0);
+				rightWall1.material = new THREE.MeshLambertMaterial({ map: self.wallTexture });
+
 				mesh.add(rightWall1);
 
 				var rightWall2 = this._createWall(self.wallColor[1], 3*self.len/5, self.width);
 				rightWall2.position.set(10, 0, 1*self.len/5);
 				rightWall2.rotation.set(0, -halfPi, 0);
+			    rightWall2.material = new THREE.MeshLambertMaterial({ map: self.wallTexture });
+
 				mesh.add(rightWall2);
 
 				connectors.push([]);
@@ -74,6 +98,8 @@ var Maze = function(scene, textureLoader) {
 			    var rightWall = this._createWall(self.wallColor[1], self.len, self.width);
 			    rightWall.position.set(10, 0, 40);
 			    rightWall.rotation.set(0, -halfPi, 0);
+			    rightWall.material = new THREE.MeshLambertMaterial({ map: self.wallTexture });
+
 			    mesh.add(rightWall);
 			}
 			
@@ -83,18 +109,21 @@ var Maze = function(scene, textureLoader) {
 		    } else {
 		        var backWall = this._createWall(0x444444, self.width, self.width);
 		        backWall.position.set(0, 0, -10);
+			    backWall.material = new THREE.MeshLambertMaterial({ map: self.wallTexture });
+		        
 		        mesh.add(backWall);
 		    }
 			
 			var ceiling = this._createWall(self.ceilingColor, self.width, self.len);
 			ceiling.position.set(0, 10, 40);
 			ceiling.rotation.set(halfPi, 0, 0);
+		    ceiling.material = new THREE.MeshLambertMaterial({ map: self.ceilingTexture });
+			    
 			mesh.add(ceiling);
 			
 			var floor = this._createWall(0x222222, self.width, self.len);
 			floor.position.set(0, -10, 40);
 			floor.rotation.set(-halfPi, 0, 0);
-
 			floor.material = new THREE.MeshLambertMaterial({ map: self.floorTexture });
 			mesh.add(floor);
 

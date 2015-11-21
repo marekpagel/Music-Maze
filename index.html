@@ -28,7 +28,7 @@
 				scene = new THREE.Scene();
 
 				var light = new THREE.AmbientLight(0xffffff);
-				//light.position.set(1, 1, 1);
+				light.position.set(1, 1, 1);
 				scene.add(light);
 				
 				camera = new THREE.PerspectiveCamera(80, width / height, 1, 1000);
@@ -38,7 +38,7 @@
 				debugCameraControls = DebugCamera(camera, new THREEx.KeyboardState());
 
 				cameraControls = PathCamera(camera);
-				cameraControls.move([0,0,60], Math.PI/2);
+				//cameraControls.move([0,0,60], Math.PI/2);
 				
 				var textureLoader = new THREE.TextureLoader();
 				textureLoader.crossOrigin = 'Anonymous';
@@ -66,7 +66,7 @@
 				requestAnimationFrame(draw);
 				
 				//cameraControls.move();
-				//debugCameraControls.move();
+				debugCameraControls.move();
 				
 				renderer.render(scene, camera);
 			}
