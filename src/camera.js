@@ -88,7 +88,7 @@ var DebugCamera = function(camera, keyboard) {
 			    self.camera.position.sub(forward);
 		    }
 		    
-		    console.log(camera.position);
+		    //console.log(camera.position);
 	    }
 	
 	};
