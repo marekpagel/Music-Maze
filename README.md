@@ -9,10 +9,15 @@ Aim of the project is to procedurally generate and follow a maze that varies bas
 
 Web Audio API seems to block files even with "crossOrigin = 'Anonymous'",
 so a HTTP server is required to run this properly.
+
 Easiest way would be to use python.
+
 In project directory, enter the following command:
+
 python2: python -m SimpleHTTPServer
+
 python3: python -m http.server
+
 Now this project should be served on localhost:8000
 
 ## How it works
