@@ -23,6 +23,8 @@ The difference from L-systems is that we don't recursively build the whole tree 
 
 Click [here](http://marekpagel.github.io/Music-Maze/) for live demo.
 
+![](http://fat.gfycat.com/CriminalShinyBaiji.gif)
+
 ## TODO
 
 * [ ] Calculate & return connector coordinates
