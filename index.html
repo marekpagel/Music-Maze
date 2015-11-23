@@ -8,14 +8,15 @@
 		<script type="text/javascript" src="src/camera.js"></script>
 		<script type="text/javascript">
 
-			var renderer, scene, camera, maze, cameraControls, debugCameraControls, analyser, frequencyData, audioSrc, audioCtx, ambientLight, lastcolor = 0.45, isMuted = false, gainNode;
+			var renderer, scene, camera, maze, cameraControls, debugCameraControls, 
+			    analyser, frequencyData, audioSrc, audioCtx, ambientLight, lastcolor = 0.45, isMuted = false, gainNode;
 
 			function toRad(degree) {
 				return Math.PI * 2 * degree / 360;
 			}
 		
 			function onLoad() { 
-				loadAudio("music/sample1.ogg");
+				loadAudio("https://raw.githubusercontent.com/marekpagel/Music-Maze/master/music/sample1.ogg");
 			}
 			
 			function draw() {
