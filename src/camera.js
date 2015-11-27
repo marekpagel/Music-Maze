@@ -34,9 +34,9 @@ var PathCamera = function(camera) {
             self.camera.position.z += delta[2];
         
             var caller = this;
-	        setTimeout(function() {
-	            caller._move(steps-1, delta, callback);
-	        }, self.moveTimeout);
+            setTimeout(function() {
+                caller._move(steps-1, delta, callback);
+            }, self.moveTimeout);
         },
         
         /**
@@ -54,11 +54,11 @@ var PathCamera = function(camera) {
             camera.rotation.y += angle / self.rotationSteps;
             
             var caller = this;
-	        setTimeout(function() {
-	            caller._rotate(steps-1, angle, callback);
-	        }, self.rotationTimeout);
+            setTimeout(function() {
+                caller._rotate(steps-1, angle, callback);
+            }, self.rotationTimeout);
         }
-	};
+    };
 };
 
 var DebugCamera = function(camera, keyboard) {
@@ -67,29 +67,29 @@ var DebugCamera = function(camera, keyboard) {
     
     return {
 
-	    move: function() {
-		    if (self.keyboard.pressed("left")){
-			    self.camera.rotation.set(0, self.camera.rotation.y + toRad(2 % 360), 0);
-		    }
-		
-		    if (self.keyboard.pressed("right")){
-			    self.camera.rotation.set(0, self.camera.rotation.y - toRad(2 % 360), 0);
-		    }
-		
-		    var forward = new THREE.Vector3(0,0,-1);
-		    forward.applyAxisAngle(new THREE.Vector3(0,1,0), self.camera.rotation.y);
-		    forward.multiplyScalar(0.5);
-		
-		    if (self.keyboard.pressed("up")){
-			    self.camera.position.add(forward);
-		    }
-		
-		    if (self.keyboard.pressed("down")){
-			    self.camera.position.sub(forward);
-		    }
-		    
-		    //console.log(camera.position);
-	    }
-	
-	};
+        move: function() {
+            if (self.keyboard.pressed("left")){
+                self.camera.rotation.set(0, self.camera.rotation.y + toRad(2 % 360), 0);
+            }
+        
+            if (self.keyboard.pressed("right")){
+                self.camera.rotation.set(0, self.camera.rotation.y - toRad(2 % 360), 0);
+            }
+        
+            var forward = new THREE.Vector3(0,0,-1);
+            forward.applyAxisAngle(new THREE.Vector3(0,1,0), self.camera.rotation.y);
+            forward.multiplyScalar(0.5);
+        
+            if (self.keyboard.pressed("up")){
+                self.camera.position.add(forward);
+            }
+        
+            if (self.keyboard.pressed("down")){
+                self.camera.position.sub(forward);
+            }
+            
+            //console.log(camera.position);
+        }
+    
+    };
 };
