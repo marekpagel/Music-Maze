@@ -7,7 +7,7 @@ var Music = function() {
             // TODO: stream the audio
             audioSrc.start(0);
         },
-    
+
         getLightColor: function() {
             analyser.getByteFrequencyData(frequencyData);
             var sum = 0;
@@ -20,7 +20,7 @@ var Music = function() {
             // right now aplification is quite useless
             aplifiedAmbientColor = (ambientColor-0.5)/(0.3) * 0.9 + 0.2
             var colordif = Math.abs(aplifiedAmbientColor - lastcolor);
-            
+
             color = [1,1,1];
             if ( colordif > 0.12) {
                 color = [1, 1, 1];
@@ -31,10 +31,10 @@ var Music = function() {
             }
 
             lastcolor = aplifiedAmbientColor;
-            
+
             return color;
         },
-        
+
         loadAudio: function(path, manager) {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             var loader = new MusicLoader(manager);
@@ -60,7 +60,7 @@ var Music = function() {
             gainNode.connect(audioCtx.destination)
 
             frequencyData = new Uint8Array(analyser.frequencyBinCount);
-            
+
         }
     };
 }
