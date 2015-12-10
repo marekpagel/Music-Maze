@@ -23,7 +23,7 @@
             function onLoad() {
                 loadingManager = new THREE.LoadingManager(loadCompleted);
                 music = Music();
-                music.loadAudio('https://raw.githubusercontent.com/marekpagel/Music-Maze/master/music/sample1.ogg', loadingManager);
+                //music.loadAudio('https://raw.githubusercontent.com/marekpagel/Music-Maze/master/music/sample1.ogg', loadingManager);
                 var textureLoader = new THREE.TextureLoader(loadingManager);
                 textureLoader.crossOrigin = 'Anonymous';
 
@@ -60,7 +60,7 @@
 
                 move1();
 
-                music.play();
+                //music.play();
                 draw();
             }
 
@@ -70,7 +70,7 @@
                 //cameraControls.move();
                 debugCameraControls.move();
 
-                nextColor = music.getLightColor();
+                //nextColor = music.getLightColor();
                 //light.color.setRGB(nextColor[0], nextColor[1], nextColor[2]);
 
                 renderer.render(scene, camera);
