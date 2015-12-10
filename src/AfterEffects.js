@@ -1,7 +1,6 @@
 AfterEffects = function(renderer, width, height) {
     vShader = document.getElementById('vShader').textContent;
     fShader = document.getElementById('fShader').textContent;
-    console.log(vShader);
     this.renderer = renderer;
     var material = new THREE.ShaderMaterial( {
         uniforms: {
