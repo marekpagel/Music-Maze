@@ -114,7 +114,7 @@
 
             }
         </script>
-        <script id="vShader" src="shaders/v.glsl" type="x-shader/x-fragment">
+        <script id="vShader" type="x-shader/x-fragment">
             varying vec2 point;
 
             void main() {
@@ -122,7 +122,7 @@
                 gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
             }
         </script>
-        <script id="fShader" src="shaders/f.glsl" type="x-shader/x-fragment">
+        <script id="fShader" type="x-shader/x-fragment">
             // shader for RGB split
             varying vec2 point;
             uniform sampler2D tex;
