@@ -16,9 +16,9 @@
             }
         
             function onLoad() {
-                music = Music();
+                //music = Music();
                 // TODO: Figure out a cleaner way to wait for audio to load.
-                music.play(function() {
+                //music.play(function() {
                     initScene();
                     var textureLoader = new THREE.TextureLoader();
                     textureLoader.crossOrigin = 'Anonymous';
@@ -49,7 +49,7 @@
                     var move1 = function() { cameraControls.move([0,0,60], Math.PI/2, move2); };
 
                     move1();
-                });
+                //});
 
             }
             
@@ -59,8 +59,8 @@
                 //cameraControls.move();
                 debugCameraControls.move();
 
-                nextColor = music.getLightColor();
-                light.color.setRGB(nextColor[0], nextColor[1], nextColor[2]);
+                // nextColor = music.getLightColor();
+                // light.color.setRGB(nextColor[0], nextColor[1], nextColor[2]);
 
                 renderer.render(scene, camera);
             }
