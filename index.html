@@ -8,9 +8,12 @@
         <script type="text/javascript" src="src/camera.js"></script>
         <script type="text/javascript" src="src/music.js"></script>
         <script type="text/javascript" src="src/MusicLoader.js"></script>
+        <script type="text/javascript" src="src/AfterEffects.js"></script>
         <script type="text/javascript">
 
             var renderer, scene, camera, maze, cameraControls, debugCameraControls, light, music, loadingManager;
+
+            var afterEffects;
 
             var isMuted = false;
             var width = 800;
@@ -73,7 +76,7 @@
                 //nextColor = music.getLightColor();
                 //light.color.setRGB(nextColor[0], nextColor[1], nextColor[2]);
 
-                renderer.render(scene, camera);
+                afterEffects.render(scene, camera);
             }
 
             function initRenderer() {
@@ -83,6 +86,7 @@
                 renderer.gammaInput = true;
                 renderer.gammaOutput = true;
                 canvasContainer.appendChild(renderer.domElement);
+                afterEffects = new AfterEffects(renderer, width, height);
             }
 
             function initScene() {
@@ -108,6 +112,27 @@
                     isMuted = true;
                 }
 
+            }
+        </script>
+        <script id="vShader" src="shaders/v.glsl" type="x-shader/x-fragment">
+            varying vec2 point;
+
+            void main() {
+                point = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+        </script>
+        <script id="fShader" src="shaders/f.glsl" type="x-shader/x-fragment">
+            // shader for RGB split
+            varying vec2 point;
+            uniform sampler2D tex;
+            uniform vec2 amount;
+
+            void main() {
+                vec4 c1 = texture2D(tex, point - amount);
+                vec4 c2 = texture2D(tex, point);
+                vec4 c3 = texture2D(tex, point + amount);
+                gl_FragColor = vec4(c1.r, c2.g, c3.b, c2.a);
             }
         </script>
     </head>
