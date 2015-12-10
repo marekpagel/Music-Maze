@@ -7,50 +7,64 @@
         <script type="text/javascript" src="src/maze.js"></script>
         <script type="text/javascript" src="src/camera.js"></script>
         <script type="text/javascript" src="src/music.js"></script>
+        <script type="text/javascript" src="src/MusicLoader.js"></script>
         <script type="text/javascript">
 
-            var renderer, scene, camera, maze, cameraControls, debugCameraControls, light, music;
+            var renderer, scene, camera, maze, cameraControls, debugCameraControls, light, music, loadingManager;
+
+            var isMuted = false;
+            var width = 800; 
+            var height = 500;
 
             function toRad(degree) {
                 return Math.PI * 2 * degree / 360;
             }
         
             function onLoad() {
-                //music = Music();
-                // TODO: Figure out a cleaner way to wait for audio to load.
-                //music.play(function() {
-                    initScene();
-                    var textureLoader = new THREE.TextureLoader();
-                    textureLoader.crossOrigin = 'Anonymous';
-        
-                    maze = Maze(scene, textureLoader);
-                    
-                    //maze.next([0,0,0],[0,0,0], [1/3, 1/3, 1/3]);
-                    
-                    // TODO choose next position at random
-                    //      then move camera to that position
-                    //      then figure out prob distribution for the 3 connectors (left, right, front)
-                    //      (based on some music analysis procedure)
-                    //      then pass that to maze.next(); and recurse
-                    // TODO probably should move this proc into draw();
-                    var positions = maze.next([0,0,0],[0,0,0], [1, 0, 0]);
-                    maze.next([-100,0,60],[0,Math.PI/2,0], [1, 0, 0]);
-                    // this is actually right wall, prob dist *should* be [0,1,0]
-                    maze.next([-40,0,80],[0,0,0], [1, 0, 0]);
-                    maze.next([-60,0,140],[0,-Math.PI/2,0], [0, 0, 0]);
-                    
-                    draw();
+                loadingManager = new THREE.LoadingManager(loadCompleted);
+                music = Music();
+                music.loadAudio('https://raw.githubusercontent.com/marekpagel/Music-Maze/master/music/sample1.ogg', loadingManager);
+                var textureLoader = new THREE.TextureLoader(loadingManager);
+                textureLoader.crossOrigin = 'Anonymous';
+    
+                initScene();
+                maze = new Maze(scene, textureLoader);
+                
+                //maze.next([0,0,0],[0,0,0], [1/3, 1/3, 1/3]);
+                
+                // TODO choose next position at random
+                //      then move camera to that position
+                //      then figure out prob distribution for the 3 connectors (left, right, front)
+                //      (based on some music analysis procedure)
+                //      then pass that to maze.next(); and recurse
+                // TODO probably should move this proc into draw();
+                var positions = maze.next([0,0,0],[0,0,0], [1, 0, 0]);
+                maze.next([-100,0,60],[0,Math.PI/2,0], [1, 0, 0]);
+                // this is actually right wall, prob dist *should* be [0,1,0]
+                maze.next([-40,0,80],[0,0,0], [1, 0, 0]);
+                maze.next([-60,0,140],[0,-Math.PI/2,0], [0, 0, 0]);
+                
+                //draw();
 
-                    cameraControls = PathCamera(camera);
+                cameraControls = PathCamera(camera);
 
-                    var move4 = function() { cameraControls.move([-135,0,140], 0); };
-                    var move3 = function() { cameraControls.move([-40,0,140], -Math.PI/2, move4); };
-                    var move2 = function() { cameraControls.move([-40,0,60], Math.PI/2, move3); };
-                    var move1 = function() { cameraControls.move([0,0,60], Math.PI/2, move2); };
+                var move4 = function() { cameraControls.move([-135,0,140], 0); };
+                var move3 = function() { cameraControls.move([-40,0,140], -Math.PI/2, move4); };
+                var move2 = function() { cameraControls.move([-40,0,60], Math.PI/2, move3); };
+                var move1 = function() { cameraControls.move([0,0,60], Math.PI/2, move2); };
 
-                    move1();
+                move1();
                 //});
 
+            }
+
+            function loadCompleted() {
+                var loader = document.getElementById('loader');
+                loader.parentNode.removeChild(loader);
+
+                initRenderer();
+                music.play();
+                draw();
             }
             
             function draw() {
@@ -59,23 +73,22 @@
                 //cameraControls.move();
                 debugCameraControls.move();
 
-                // nextColor = music.getLightColor();
-                // light.color.setRGB(nextColor[0], nextColor[1], nextColor[2]);
+                nextColor = music.getLightColor();
+                //light.color.setRGB(nextColor[0], nextColor[1], nextColor[2]);
 
                 renderer.render(scene, camera);
             }
 
-            function initScene() {
+            function initRenderer() {
                 var canvasContainer = document.getElementById('myCanvasContainer'); 
-                var width = 800; 
-                var height = 500;
-
                 renderer = new THREE.WebGLRenderer(); 
                 renderer.setSize(width, height);
                 renderer.gammaInput = true;
                 renderer.gammaOutput = true;
                 canvasContainer.appendChild(renderer.domElement);
-                
+            }
+
+            function initScene() {
                 scene = new THREE.Scene();
 
                 light = new THREE.AmbientLight(0xffffff);
@@ -102,7 +115,9 @@
         </script>
     </head>
     <body onload="onLoad()">
-        <div id="myCanvasContainer" style="margin: auto;width:800px;"></div>
+        <div id="myCanvasContainer" style="margin: auto;width:800px;">
+            <img id="loader" src="img/loader.gif"></img>
+        </div>
         <button onclick="mute()">mute</button>
     </body>
 </html>

@@ -1,12 +1,11 @@
 var Music = function() {
     var analyser, frequencyData, audioSrc, audioCtx, lastcolor = 0.45, isMuted = false, gainNode;
-    
-    
+
     return {
-        play: function(onReady) {
+        play: function() {
             // TODO: use a playlist?
             // TODO: stream the audio
-            this._loadAudio("https://raw.githubusercontent.com/marekpagel/Music-Maze/master/music/sample1.ogg", onReady);
+            audioSrc.start(0);
         },
     
         getLightColor: function() {
@@ -36,20 +35,16 @@ var Music = function() {
             return color;
         },
         
-        _loadAudio: function(path, onReady) {
+        loadAudio: function(path, manager) {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            var request = new XMLHttpRequest();
-            request.open("GET", path, true);
-            request.responseType = "arraybuffer";
-            
+            var loader = new MusicLoader(manager);
             var caller = this;
-            request.onload = function() {
-                audioCtx.decodeAudioData(request.response, function(buffer) {
+            loader.load(path, function(response) {
+                audioCtx.decodeAudioData(response, function(buffer) {
                     caller._initAudio(buffer);
-                    onReady();
+                    loader.manager.itemEnd(path);
                 })
-            }
-            request.send();
+            });
         },
 
         _initAudio: function(buffer) {
@@ -66,7 +61,6 @@ var Music = function() {
 
             frequencyData = new Uint8Array(analyser.frequencyBinCount);
             
-            audioSrc.start(0);
         }
     };
 }
