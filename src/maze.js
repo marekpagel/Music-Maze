@@ -8,9 +8,6 @@ Maze = function ( scene, textureLoader) {
     this.width = 20;
     this.len   = 100;
 
-    this.wallColor    = [0x555555, 0x333333];
-    this.ceilingColor = 0x111111;
-
     this.ceilingTexture = textureLoader.load(this.imgServer + "ceiling.jpg", function(texture) {
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
