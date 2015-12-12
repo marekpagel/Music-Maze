@@ -7,7 +7,6 @@
         <script type="text/javascript" src="src/maze.js"></script>
         <script type="text/javascript" src="src/camera.js"></script>
         <script type="text/javascript" src="src/music.js"></script>
-        <script type="text/javascript" src="src/MusicLoader.js"></script>
         <script type="text/javascript" src="src/AfterEffects.js"></script>
         <script type="text/javascript">
 
@@ -28,7 +27,7 @@
             function onLoad() {
                 loadingManager = new THREE.LoadingManager(loadCompleted);
                 music = Music();
-                //music.loadAudio('https://raw.githubusercontent.com/marekpagel/Music-Maze/master/music/sample1.ogg', loadingManager);
+                music.prepareMusic('https://raw.githubusercontent.com/marekpagel/Music-Maze/master/music/sample1.ogg', loadingManager);
                 var textureLoader = new THREE.TextureLoader(loadingManager);
                 textureLoader.crossOrigin = 'Anonymous';
 
@@ -54,7 +53,7 @@
                 //console.log(nextMove);
                 //cameraControls.move(nextMove[0][0], nextMove[0][1]);
                 
-                //music.play();
+                music.play();
                 draw();
             }
 
@@ -131,16 +130,6 @@
                 }
             }
 
-            function mute() {
-                if (isMuted) {
-                    gainNode.gain.value = 1;
-                    isMuted = false;
-                } else {
-                    gainNode.gain.value = 0;
-                    isMuted = true;
-                }
-
-            }
         </script>
         <script id="vShader" type="x-shader/x-fragment">
             varying vec2 point;
@@ -168,6 +157,6 @@
         <div id="myCanvasContainer" style="margin: auto;width:800px;">
             <img id="loader" src="img/loader.gif"></img>
         </div>
-        <button onclick="mute()">mute</button>
+        <button onclick="music.mute()">mute</button>
     </body>
 </html>

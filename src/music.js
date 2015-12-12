@@ -1,11 +1,35 @@
 var Music = function() {
     var analyser, frequencyData, audioSrc, audioCtx, lastcolor = 0.45, isMuted = false, gainNode;
 
+    var audio = new Audio();
+    audio.crossOrigin = 'Anonymous';
+    document.body.appendChild(audio);
+
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioCtx.createAnalyser();
+    analyser.smoothingTimeConstant = 0;
+    gainNode = audioCtx.createGain();
+
+    analyser.connect(gainNode);
+    gainNode.connect(audioCtx.destination)
+
+    frequencyData = new Uint8Array(analyser.frequencyBinCount);
+
     return {
         play: function() {
             // TODO: use a playlist?
-            // TODO: stream the audio
-            audioSrc.start(0);
+            audio.play();
+        },
+
+        prepareMusic: function(url, manager) {
+            manager.itemStart(url);
+            audio.src = url;
+            audio.oncanplay = function() {
+                audioSrc = audioCtx.createMediaElementSource(audio);
+                audioSrc.connect(analyser);
+                manager.itemEnd(url);
+            };
+            audio.load();
         },
 
         getLightColor: function() {
@@ -35,31 +59,14 @@ var Music = function() {
             return color;
         },
 
-        loadAudio: function(path, manager) {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            var loader = new MusicLoader(manager);
-            var caller = this;
-            loader.load(path, function(response) {
-                audioCtx.decodeAudioData(response, function(buffer) {
-                    caller._initAudio(buffer);
-                    loader.manager.itemEnd(path);
-                })
-            });
-        },
-
-        _initAudio: function(buffer) {
-            audioSrc = audioCtx.createBufferSource();
-            audioSrc.buffer = buffer;
-
-            analyser = audioCtx.createAnalyser();
-            analyser.smoothingTimeConstant = 0;
-            gainNode = audioCtx.createGain();
-
-            audioSrc.connect(analyser);
-            analyser.connect(gainNode);
-            gainNode.connect(audioCtx.destination)
-
-            frequencyData = new Uint8Array(analyser.frequencyBinCount);
+        mute: function() {
+            if (isMuted) {
+                gainNode.gain.value = 1;
+                isMuted = false;
+            } else {
+                gainNode.gain.value = 0;
+                isMuted = true;
+            }
 
         }
     };
