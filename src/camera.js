@@ -88,7 +88,9 @@ var DebugCamera = function(camera, keyboard) {
                 self.camera.position.sub(forward);
             }
 
-            //console.log(camera.position);
+            if (self.keyboard.pressed("q")) {
+                console.log(camera.position);
+            }
         }
 
     };
