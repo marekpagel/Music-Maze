@@ -82,7 +82,8 @@
                 //nextColor = music.getLightColor();
                 //light.color.setRGB(nextColor[0], nextColor[1], nextColor[2]);
 
-                afterEffects.render(scene, camera);
+                //afterEffects.render(scene, camera);
+                renderer.render(scene, camera);
             }
 
             function initRenderer() {
@@ -159,8 +160,7 @@
                 vec4 c1 = texture2D(tex, point - amount);
                 vec4 c2 = texture2D(tex, point);
                 vec4 c3 = texture2D(tex, point + amount);
-                //gl_FragColor = vec4(c1.r, c2.g, c3.b, c2.a);
-                gl_FragColor = texture2D(tex, point);
+                gl_FragColor = vec4(c1.r, c2.g, c3.b, c2.a);
             }
         </script>
     </head>
