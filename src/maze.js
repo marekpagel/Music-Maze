@@ -77,7 +77,7 @@ Maze.prototype = {
         }
 
         var frontRnd = Math.random();
-        if (frontRnd < prob[2]) {
+        if (frontRnd < prob[2] || (leftRnd >= prob[0] && rightRnd >= prob[1])) {
             connectors.push(this._getConnector(position, rotation, -5*self.len/5, 0));
         } else {
             var backWall = this._createWall(self.width, self.width, self.wallTexture, [0, 0, -100], [0, 0, 0]);

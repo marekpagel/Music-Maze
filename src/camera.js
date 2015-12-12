@@ -15,10 +15,12 @@ var PathCamera = function(camera) {
 
             var caller = this;
             
-            var callback = function() {
-                nextMove = self.moves.shift();
-                caller.move(nextMove[0][0], nextMove[0][1]);
-            };
+            if (callback == undefined) {
+                var callback = function() {
+                    nextMove = self.moves.shift();
+                    caller.move(nextMove[0][0], nextMove[0][1]);
+                };
+            }
             
             var rotate = function() {
                 caller._rotate(self.rotationSteps, rotation, callback);
@@ -36,6 +38,8 @@ var PathCamera = function(camera) {
         },
         
         nearNextMove: function() {
+            if (self.moves.length == 0) { return false; }
+        
             var position = self.moves[0][0][0];
 
             var dx = Math.pow(position[0] - self.camera.position.x, 2);

@@ -50,11 +50,38 @@
                 //      replace current random() with prob distribution for the 3 connectors (left, right, front)
                 //      (based on some music analysis procedure)
                 // TODO currently maze overlapping may happen (i.e. 3 left corners in a row), fix this when implementing prob distribution
-                addMazeConnectors([0,0,0],[0,0,0]);
+                // addMazeConnectors([0,0,0],[0,0,0]);
 
                 //nextMove = cameraControls._getMoves()[0];
                 //console.log(nextMove);
                 //cameraControls.move(nextMove[0][0], nextMove[0][1]);
+                
+                // for demo purposes - randomly pre-generated maze that follows a specific path
+                var connectors = maze.next([0,0,0],[0,0,0], [1,1,1]);
+                var moves = [];
+                for (var i = 0; i < 5; i++) {
+                    var nextMoveIdx = Math.floor(Math.random()*connectors.length);
+                    moves.push(connectors[nextMoveIdx]);
+                    var nextConnectors = [];
+                    
+                    for (c in connectors) {
+                        probDistribution = [0,0,0];
+                        if (c == nextMoveIdx) {
+                            probDistribution = [Math.random(), Math.random(), Math.random()];
+                        }
+
+                        nextConnectors = nextConnectors.concat(maze.next(connectors[c][0], connectors[c][1], probDistribution));
+                    }
+                    
+                    connectors = nextConnectors;
+                }
+                
+                var nextMove = function() { cameraControls.move(moves[4][0], moves[4][1][1]); };
+                for (var i = 3; i > 0; i--) {
+                    var nextMove = function() { cameraControls.move(moves[i][0], moves[i][1][1], nextMove); };
+                }
+
+                nextMove();
                 
                 //music.play();
                 draw();
