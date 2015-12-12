@@ -16,8 +16,10 @@ var Music = function() {
     frequencyData = new Uint8Array(analyser.frequencyBinCount);
 
     return {
-        play: function() {
-            // TODO: use a playlist?
+        // TODO: use a playlist?
+        play: function(waiting, playing) {
+            audio.onwaiting = waiting;
+            audio.onplaying = playing;
             audio.play();
         },
 

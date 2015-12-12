@@ -15,8 +15,8 @@
             var afterEffects;
             
             var nextMoveDrawn = false;
+            var skipUpdate = true;
 
-            var isMuted = false;
             var width = 800;
             var height = 500;
 
@@ -53,12 +53,31 @@
                 //console.log(nextMove);
                 //cameraControls.move(nextMove[0][0], nextMove[0][1]);
                 
-                music.play();
+                music.play(buffering_music, music_playing);
                 draw();
+            }
+
+            function buffering_music() {
+                skipUpdate = true;
+                console.log('stopping for music buffering');
+            }
+
+            function music_playing() {
+                skipUpdate = false;
+                console.log('playing music');
             }
 
             function draw() {
                 requestAnimationFrame(draw);
+
+                if (skipUpdate) {
+                    // TODO do not do regular stuff
+                    // this is todo, because currently there are nasty setInterval
+                    // timers used for moving the camera.
+                    // Also might display something to the user
+                    // However with a good internet, might never happen;
+                    return;
+                }
 
                 if (cameraControls.nearNextMove() && !nextMoveDrawn) {
                     console.log(cameraControls._getMoves());
