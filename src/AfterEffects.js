@@ -25,10 +25,10 @@ AfterEffects = function(renderer, width, height) {
     });
 }
 
-AfterEffects.prototype.render = function(scene, camera) {
+AfterEffects.prototype.render = function(scene, camera, amount) {
     this.renderer.render(scene, camera, this.target, true);
     this.quad.material.uniforms.tex.value = this.target;
     // TODO: connect this vector with music
-    this.quad.material.uniforms.amount.value = new THREE.Vector2(0.00,0.03);
+    this.quad.material.uniforms.amount.value = amount;
     this.renderer.render(this.scene, this.camera);
 }

@@ -61,6 +61,18 @@ var Music = function() {
             return color;
         },
 
+        getSplitVec: function() {
+            // TODO: use something more reasonable
+            // At first I thought that RGB split should happen with BASS.
+            // So we need to also set a threshold and so on.
+            analyser.getByteFrequencyData(frequencyData);
+            var sum = 0;
+            for (var i = 0; i < 128; ++i) {
+                sum += frequencyData[i];
+            }
+            return new THREE.Vector2(sum / (4096*255), 0);
+        },
+
         mute: function() {
             if (isMuted) {
                 gainNode.gain.value = 1;

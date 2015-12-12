@@ -100,7 +100,8 @@
                 //nextColor = music.getLightColor();
                 //light.color.setRGB(nextColor[0], nextColor[1], nextColor[2]);
 
-                //afterEffects.render(scene, camera);
+                var vec = music.getSplitVec();
+                //afterEffects.render(scene, camera, vec);
                 renderer.render(scene, camera);
             }
 
