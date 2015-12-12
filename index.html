@@ -25,7 +25,7 @@
             }
 
             function onLoad() {
-                var mm = Maze2(5,5);
+                //var mm = Maze2(5,5);
                 loadingManager = new THREE.LoadingManager(loadCompleted);
                 music = Music();
                 //music.loadAudio('https://raw.githubusercontent.com/marekpagel/Music-Maze/master/music/sample1.ogg', loadingManager);
@@ -48,11 +48,10 @@
                 //      (based on some music analysis procedure)
                 //      then pass that to maze.next(); and recurse
                 // TODO probably should move this proc into draw();
-                var positions = maze.next([0,0,0],[0,0,0], [1, 0, 0]);
-                maze.next([-100,0,60],[0,Math.PI/2,0], [1, 0, 0]);
-                // this is actually right wall, prob dist *should* be [0,1,0]
-                maze.next([-40,0,80],[0,0,0], [1, 0, 0]);
-                maze.next([-60,0,140],[0,-Math.PI/2,0], [0, 0, 0]);
+                var connectors = maze.next([0,0,0],[0,0,0], [1, 1, 1]);
+                //var connectors = maze.next(connectors[0][0], connectors[0][1], [1, 0, 0]);
+                //var connectors = maze.next(connectors[0][0], connectors[0][1], [0, 1, 0]);
+                //var connectors = maze.next(connectors[0][0], connectors[0][1], [0, 0, 0]);
 
                 //draw();
 
@@ -63,7 +62,7 @@
                 var move2 = function() { cameraControls.move([-40,0,60], Math.PI/2, move3); };
                 var move1 = function() { cameraControls.move([0,0,60], Math.PI/2, move2); };
 
-                move1();
+                //move1();
 
                 //music.play();
                 draw();
@@ -99,7 +98,7 @@
                 scene.add(light);
 
                 camera = new THREE.PerspectiveCamera(80, width / height, 1, 1000);
-                camera.position.set(0,0,95);
+                camera.position.set(0,0,-10);
                 camera.up = new THREE.Vector3(0,1,0);
 
                 debugCameraControls = DebugCamera(camera, new THREEx.KeyboardState());
