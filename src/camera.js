@@ -3,6 +3,7 @@ var PathCamera = function(camera) {
     this.rotationSteps = 15;
     this.moveTimeout = 25;
     this.rotationTimeout = 35;
+    this.moves = []; // queue
 
     return {
         move: function(position, rotation, callback) {
@@ -13,12 +14,41 @@ var PathCamera = function(camera) {
             var steps = Math.max(Math.abs(dz), Math.max(Math.abs(dx), Math.abs(dy)));
 
             var caller = this;
+            
+            var callback = function() {
+                nextMove = self.moves.shift();
+                caller.move(nextMove[0][0], nextMove[0][1]);
+            };
+            
             var rotate = function() {
                 caller._rotate(self.rotationSteps, rotation, callback);
             };
 
             this._move(steps, [dx/steps,dy/steps,dz/steps], rotate);
         },
+
+        addMove: function(move) {
+            self.moves.push(move);
+        },
+        
+        getNextMove: function() {
+            return self.moves[0];
+        },
+        
+        nearNextMove: function() {
+            var position = self.moves[0][0][0];
+
+            var dx = Math.pow(position[0] - self.camera.position.x, 2);
+            var dy = Math.pow(position[1] - self.camera.position.y, 2);
+            var dz = Math.pow(position[2] - self.camera.position.z, 2);
+            
+            var dist = Math.sqrt(dx + dy + dz);
+            
+            return dist <= 25.0;
+        },
+        
+        // for debugging only
+        _getMoves: function() { return self.moves },
 
         _move: function(steps, delta, callback) {
             if (steps == 0) {
