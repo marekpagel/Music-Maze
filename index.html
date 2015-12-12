@@ -9,7 +9,6 @@
         <script type="text/javascript" src="src/music.js"></script>
         <script type="text/javascript" src="src/MusicLoader.js"></script>
         <script type="text/javascript" src="src/AfterEffects.js"></script>
-        <script type="text/javascript" src="src/maze2.js"></script>
         <script type="text/javascript">
 
             var renderer, scene, camera, maze, cameraControls, debugCameraControls, light, music, loadingManager;
@@ -27,7 +26,6 @@
             }
 
             function onLoad() {
-                //var mm = Maze2(5,5);
                 loadingManager = new THREE.LoadingManager(loadCompleted);
                 music = Music();
                 //music.loadAudio('https://raw.githubusercontent.com/marekpagel/Music-Maze/master/music/sample1.ogg', loadingManager);
