@@ -48,12 +48,14 @@
                 //      (based on some music analysis procedure)
                 //      then pass that to maze.next(); and recurse
                 // TODO probably should move this proc into draw();
-                var connectors = maze.next([0,0,0],[0,0,0], [1, 1, 1]);
-                //var connectors = maze.next(connectors[0][0], connectors[0][1], [1, 0, 0]);
-                //var connectors = maze.next(connectors[0][0], connectors[0][1], [0, 1, 0]);
-                //var connectors = maze.next(connectors[0][0], connectors[0][1], [0, 0, 0]);
-
-                //draw();
+                var connectors = [[[0,0,0],[0,0,0]]];
+                for (var i = 0; i < 2; i++) {
+                    var nextConnectors = [];
+                    for (c in connectors) {
+                        nextConnectors = nextConnectors.concat(maze.next(connectors[c][0], connectors[c][1], [Math.random(), Math.random(), Math.random()]));
+                    }
+                    connectors = nextConnectors;
+                }
 
                 cameraControls = PathCamera(camera);
 
