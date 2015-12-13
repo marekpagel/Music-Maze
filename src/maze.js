@@ -119,7 +119,7 @@ Maze.prototype = {
     
     _getConnector: function(position, rotation, newPosition, newAngle) {
         var c = new THREE.Vector3(0,0,newPosition);
-        c.applyAxisAngle(new THREE.Vector3(0, 1, 0), rotation[1]).add(new THREE.Vector3(position[0], position[1], position[2]));
+        c.applyAxisAngle(new THREE.Vector3(0, 1, 0), rotation[1]).add(new THREE.Vector3(position[0], position[1], position[2])).round();
         return [c.toArray(), [rotation[0], rotation[1] + newAngle, rotation[2]]];
     }    
 };
