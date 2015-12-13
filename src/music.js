@@ -74,8 +74,6 @@ var Music = function() {
                 color = [0.3, 0.3, 0.3];
             }
 
-            console.log(color);
-
             lastcolor = aplifiedAmbientColor;
             this.lightColor = color;
         },
@@ -148,7 +146,10 @@ var Music = function() {
         },
 
         getProbDist: function() {
-            var dist = [0,0,0];
+            var dist = new Array(3);
+            for (i = 0; i < 3; ++i) {
+                dist[i] = 0;
+            }
             var i = 0;
             for (; i < length/3; ++i) {
                 dist[0] += levelHistory[i];

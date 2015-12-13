@@ -47,7 +47,7 @@
                 //      replace current random() with prob distribution for the 3 connectors (left, right, front)
                 //      (based on some music analysis procedure)
                 // TODO currently maze overlapping may happen (i.e. 3 left corners in a row), fix this when implementing prob distribution
-                addMazeConnectors([0,0,0],[0,0,0]);
+                addMazeConnectors([0,0,0],[0,0,0], [Math.random(),Math.random(), Math.random()]);
 
                 //nextMove = cameraControls._getMoves()[0];
                 //console.log(nextMove);
@@ -79,12 +79,15 @@
                     return;
                 }
 
+
+                music.update();
                 if (cameraControls.nearNextMove() && !nextMoveDrawn) {
                     console.log(cameraControls._getMoves());
                     console.log("adding next connectors");
                     nextMove = cameraControls.getNextMove();
                     for (c in nextMove[1]) {
-                        addMazeConnectors(nextMove[1][c][0],nextMove[1][c][1]);
+                        addMazeConnectors(nextMove[1][c][0],nextMove[1][c][1],
+                                music.getProbDist());
                     }
                     
                     nextMoveDrawn = true;
@@ -97,10 +100,7 @@
 
                 debugCameraControls.move();
 
-                music.update();
-
                 nextColor = music.lightColor;
-                console.log(nextColor);
                 light.color.setRGB(nextColor[0], nextColor[1], nextColor[2]);
 
                 afterEffects.render(scene, camera, music.rgbSplitAmount);
@@ -133,8 +133,8 @@
             
             // add two layers of connectors
             // two to avoid having non-generated maze before entering the corner
-            function addMazeConnectors(position, rotation) {
-                var connectors = maze.next(position,rotation, [Math.random(), Math.random(), Math.random()]);
+            function addMazeConnectors(position, rotation, probs) {
+                var connectors = maze.next(position,rotation, probs);
 
                 var nextMoveIdx = Math.floor(Math.random()*connectors.length);
                 
