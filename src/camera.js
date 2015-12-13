@@ -6,10 +6,22 @@ var PathCamera = function(camera) {
     this.moves = []; // queue
 
     return {
+        move2: function(pos, rot, end) {
+            var moveTween = new TWEEN.Tween(self.camera.position)
+                .to({x: pos[0], y: pos[1], z:pos[2]}, 1000);
+
+            var rotateTween = new TWEEN.Tween(self.camera.rotation)
+                .to({y: rot}, 1000)
+                .onComplete(end);
+
+            moveTween.chain(rotateTween);
+            moveTween.start();
+        },
         move: function(position, rotation, callback) {
             var dx = position[0] - self.camera.position.x;
             var dy = position[1] - self.camera.position.y;
             var dz = position[2] - self.camera.position.z;
+
 
             var steps = Math.max(Math.abs(dz), Math.max(Math.abs(dx), Math.abs(dy)));
 

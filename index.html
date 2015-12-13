@@ -4,6 +4,7 @@
         <title>Music Maze</title>
         <script type="text/javascript" src="lib/three.r73.js"></script>
         <script type="text/javascript" src="lib/THREEx.KeyboardState.js"></script>
+        <script type="text/javascript" src="lib/Tween.js"></script>
         <script type="text/javascript" src="src/maze.js"></script>
         <script type="text/javascript" src="src/camera.js"></script>
         <script type="text/javascript" src="src/music.js"></script>
@@ -82,14 +83,13 @@
 
                 if (skipUpdate) {
                     // TODO do not do regular stuff
-                    // this is todo, because currently there are nasty setInterval
-                    // timers used for moving the camera.
                     // Also might display something to the user
                     // However with a good internet, might never happen;
                     return;
                 }
 
-
+                //TWEEN.update(music.currentTime);
+                TWEEN.update();
                 music.update();
                 if (cameraControls.nearNextMove() && !nextMoveDrawn) {
                     console.log(cameraControls._getMoves());
@@ -125,6 +125,14 @@
                 renderer.gammaOutput = true;
                 canvasContainer.appendChild(renderer.domElement);
                 afterEffects = new AfterEffects(renderer, width, height);
+            }
+
+            function test() {
+                var call = function() {
+                    console.log('at end of move');
+                }
+                console.log('eee');
+                cameraControls.move2([10, 0, -10], 0.5, call);
             }
 
             function initScene() {
@@ -191,5 +199,6 @@
         </div>
         <button onclick="music.mute()">mute</button>
         <button onclick="music.test()">test</button>
+        <button onclick="test()">test2</button>
     </body>
 </html>
