@@ -26,7 +26,17 @@
 
             function onLoad() {
                 loadingManager = new THREE.LoadingManager(loadCompleted);
-                music = Music();
+                //music = Music();
+                music = {
+                    lightColor: [1,1,1],
+                    rgbSplitAmount: new THREE.Vector2(),
+                    prepareMusic: function() {},
+                    play: function(_buf, start) { start(); },
+                    update: function() {},
+                    getProbDist: function() {
+                        return [Math.random(), Math.random(), Math.random()];
+                    }
+                };
                 music.prepareMusic('https://raw.githubusercontent.com/marekpagel/Music-Maze/master/music/sample1.ogg', loadingManager);
                 var textureLoader = new THREE.TextureLoader(loadingManager);
                 textureLoader.crossOrigin = 'Anonymous';
