@@ -29,7 +29,7 @@ var PathCamera = function(camera) {
             
             var callback = function() {
                 nextMove = self.moves.shift();
-                caller.move(nextMove[0][0], nextMove[0][1]);
+                caller.move(nextMove[0][0], nextMove[0][1][1]);
             };
             
             var rotate = function() {
