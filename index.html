@@ -97,12 +97,14 @@
 
                 debugCameraControls.move();
 
-                //nextColor = music.getLightColor();
-                //light.color.setRGB(nextColor[0], nextColor[1], nextColor[2]);
+                music.update();
 
-                var vec = music.getSplitVec();
-                //afterEffects.render(scene, camera, vec);
-                renderer.render(scene, camera);
+                nextColor = music.lightColor;
+                console.log(nextColor);
+                light.color.setRGB(nextColor[0], nextColor[1], nextColor[2]);
+
+                afterEffects.render(scene, camera, music.rgbSplitAmount);
+                //renderer.render(scene, camera);
             }
 
             function initRenderer() {
@@ -178,5 +180,6 @@
             <img id="loader" src="img/loader.gif"></img>
         </div>
         <button onclick="music.mute()">mute</button>
+        <button onclick="music.test()">test</button>
     </body>
 </html>
