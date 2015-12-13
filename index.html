@@ -60,11 +60,12 @@
                 // TODO currently maze overlapping may happen (i.e. 3 left corners in a row), fix this when implementing prob distribution
                 addMazeConnectors([0,0,0],[0,0,0], [Math.random(),Math.random(), Math.random()]);
 
-                //nextMove = cameraControls._getMoves()[0];
+                nextMove = cameraControls._getMoves()[0];
                 //console.log(nextMove);
-                //cameraControls.move(nextMove[0][0], nextMove[0][1]);
+                cameraControls.move(nextMove[0][0], nextMove[0][1][1]);
                 
                 music.play(buffering_music, music_playing);
+                music.mute();
                 draw();
             }
 
