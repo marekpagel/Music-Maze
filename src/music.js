@@ -200,9 +200,11 @@ var Music = function() {
         mute: function() {
             if (isMuted) {
                 gainNode.gain.value = 1;
+                muteToggleBtn.src="img/speaker100.svg"
                 isMuted = false;
             } else {
                 gainNode.gain.value = 0;
+                muteToggleBtn.src="img/speaker113.svg"
                 isMuted = true;
             }
 

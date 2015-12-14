@@ -21,10 +21,12 @@
             var width = window.innerWidth;
             var height = window.innerHeight;
 
+            var muteToggleBtn;
+
             window.onresize = function() {
-    			renderer.setSize(window.innerWidth, window.innerHeight);
-			}
-			
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+
             function toRad(degree) {
                 return Math.PI * 2 * degree / 360;
             }
@@ -32,6 +34,7 @@
             function onLoad() {
                 loadingManager = new THREE.LoadingManager(loadCompleted);
                 music = Music();
+
                 /*music = {
                     lightColor: [1,1,1],
                     rgbSplitAmount: new THREE.Vector2(),
@@ -42,6 +45,7 @@
                         return [Math.random(), Math.random(), Math.random()];
                     }
                 };*/
+                muteToggleBtn = document.getElementById('muteToggle');
                 music.prepareMusic('https://raw.githubusercontent.com/marekpagel/Music-Maze/master/music/sample1.ogg', loadingManager);
                 var textureLoader = new THREE.TextureLoader(loadingManager);
                 textureLoader.crossOrigin = 'Anonymous';
@@ -181,6 +185,7 @@
         </script>
     </head>
     <body onload="onLoad()">
+        <image id="muteToggle" onclick="music.mute()" src="img/speaker100.svg"></button>
         <div id="myCanvasContainer">
             <img id="loader" src="img/loader.gif"></img>
         </div>
