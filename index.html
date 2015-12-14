@@ -9,6 +9,7 @@
         <script type="text/javascript" src="src/camera.js"></script>
         <script type="text/javascript" src="src/music.js"></script>
         <script type="text/javascript" src="src/AfterEffects.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
         <script type="text/javascript">
 
             var renderer, scene, camera, maze, cameraControls, debugCameraControls, light, music, loadingManager;
@@ -17,9 +18,13 @@
             var connectors;
             var skipUpdate = true;
 
-            var width = 800;
-            var height = 500;
+            var width = window.innerWidth;
+            var height = window.innerHeight;
 
+            window.onresize = function() {
+    			renderer.setSize(window.innerWidth, window.innerHeight);
+			}
+			
             function toRad(degree) {
                 return Math.PI * 2 * degree / 360;
             }
@@ -176,11 +181,8 @@
         </script>
     </head>
     <body onload="onLoad()">
-        <div id="myCanvasContainer" style="margin: auto;width:800px;">
+        <div id="myCanvasContainer">
             <img id="loader" src="img/loader.gif"></img>
         </div>
-        <button onclick="music.mute()">mute</button>
-        <button onclick="music.test()">test</button>
-        <button onclick="TWEEN.removeAll()">test2</button>
     </body>
 </html>
