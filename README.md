@@ -18,6 +18,32 @@ Music analysis comes into play by manipulatng the probability distribution of th
 
 The difference from L-systems is that we don't recursively build the whole tree - only the path that was chosen.
 
+## Music streaming and analysis
+
+Music is streamed by using HTML5 audio element. It is connected to the Web
+Audio API, which lets us do things like delaying the music for ahead of time
+analysis. Web Audio API lets us do frequency domain analysis very easily and we
+use that info to detect large changes in the lower frequency range. Based on
+the amount of "beats" we assing probabilities to maze generation.
+
+## RGB - splitting
+
+In some music videos they use RGB splitting when the bass kicks. Implementing
+it is pretty straightforward, as it is an post-processing pass. At first the
+regular scene is rendered onto a texture. Then the terture is applied to quad
+and rendered to screen with special shader, which does the actual splitting of
+RGB channels.
+
+## Smooth moving
+
+It is well known that javascript timers are inaccurate. When animating a moving
+object we want the animation to be smooth. For this we can use a high
+performance timer. At the start of movement we store the start position and
+the start time. Then we can use the same timer in the draw callback to
+calculate the linear displacement. Luckily there is a very simple library
+called [tween.js](https://github.com/tweenjs/tween.js), that abstracts the
+details away.
+
 ## Demo
 
 Click [here](http://marekpagel.github.io/Music-Maze/) for live demo.
