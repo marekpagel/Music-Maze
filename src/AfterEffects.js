@@ -10,8 +10,9 @@ AfterEffects = function(renderer, width, height) {
         vertexShader: vShader,
         fragmentShader: fShader
     });
-    this.quad = new THREE.Mesh(new THREE.PlaneBufferGeometry(width,height),
+    this.quad = new THREE.Mesh(new THREE.PlaneBufferGeometry(1,1),
             material);
+    this.quad.scale.set(width,height,1);
     this.scene = new THREE.Scene();
     this.scene.add(this.quad);
     this.camera = new THREE.OrthographicCamera(
@@ -30,4 +31,15 @@ AfterEffects.prototype.render = function(scene, camera, amount) {
     this.quad.material.uniforms.tex.value = this.target;
     this.quad.material.uniforms.amount.value = amount;
     this.renderer.render(this.scene, this.camera);
+}
+
+AfterEffects.prototype.setSize = function(width, height) {
+    this.camera.projectionMatrix.makeOrthographic(
+                            width / - 2,
+                            width / 2,
+                            height / 2,
+                            height / - 2,
+                            -100, 100);
+    this.quad.scale.set(width, height, 1);
+    this.target.setSize(width, height);
 }

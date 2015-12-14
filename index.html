@@ -24,7 +24,12 @@
             var muteToggleBtn;
 
             window.onresize = function() {
-                renderer.setSize(window.innerWidth, window.innerHeight);
+                var w = window.innerWidth;
+                var h = window.innerHeight;
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                afterEffects.setSize(w,h);
+                renderer.setSize(w,h);
             }
 
             function toRad(degree) {
