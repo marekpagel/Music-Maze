@@ -22,6 +22,7 @@
             var height = window.innerHeight;
 
             var muteToggleBtn;
+            var counter = 0;
 
             window.onresize = function() {
                 var w = window.innerWidth;
@@ -142,11 +143,24 @@
 
                 debugCameraControls = DebugCamera(camera, new THREEx.KeyboardState());
             }
+
+            // remove meshes older than 3 generations
+            function cleanScene(age) {
+                var oldMesh = scene.getObjectByName((counter - age + 10) % 10)
+                while (typeof(oldMesh) != "undefined") {
+                    scene.remove(oldMesh)
+                    oldMesh = scene.getObjectByName((counter - age + 10) % 10)
+                }
+            }
             
             // add two layers of connectors
             // two to avoid having non-generated maze before entering the corner
             function addMazeConnectors(connectors, musicProbDistribution) {
+                cleanScene(2)
+                // mod10 just so in theory of infinite maze, it won't overflow
+                counter = (counter + 1) % 10
                 var nextMoveIdx = Math.floor(Math.random()*connectors.length);
+
                 var updatedConnectors = null;
                 for (c in connectors) {
                     probDistribution = [0,0,0];

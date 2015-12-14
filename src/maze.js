@@ -41,9 +41,9 @@ Maze.prototype = {
     next: function(position, rotation, prob) {
         var self = this;
         var mesh = new THREE.Mesh();
+        mesh.name = counter;
 
         var connectors = [];
-        scene.children.splice(1, scene.children.length - 7)
 
         var leftRnd = Math.random();
         //leftRnd = 1;
@@ -128,6 +128,7 @@ Maze.prototype = {
     _createWall: function(width, height, texture, position, rotation) {
         w = width / 20;
         h = height / 20;
+
         var geometry = new THREE.PlaneGeometry(width, height);
         var uvs = geometry.faceVertexUvs[ 0 ];
         uvs[ 0 ][ 0 ].set( 0, h );
