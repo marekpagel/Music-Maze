@@ -28,8 +28,8 @@ var PathCamera = function(camera) {
             var caller = this;
             
             var callback = function() {
-                nextMove = self.moves.shift();
-                caller.move(nextMove[0][0], nextMove[0][1][1]);
+                currentMove = self.moves.shift();
+                caller.move(currentMove[0][0], currentMove[0][1][1]);
             };
             
             var rotate = function() {
@@ -48,15 +48,18 @@ var PathCamera = function(camera) {
         },
         
         nearNextMove: function() {
-            var position = self.moves[0][0][0];
+            var position = currentMove[0][0];
 
             var dx = Math.pow(position[0] - self.camera.position.x, 2);
             var dy = Math.pow(position[1] - self.camera.position.y, 2);
             var dz = Math.pow(position[2] - self.camera.position.z, 2);
             
             var dist = Math.sqrt(dx + dy + dz);
-            
             return dist <= 25.0;
+        },
+
+        popQueue: function() {
+            return self.moves.shift();
         },
         
         // for debugging only

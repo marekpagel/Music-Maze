@@ -44,6 +44,7 @@ Maze.prototype = {
         var mesh = new THREE.Mesh();
 
         var connectors = [];
+        scene.children.splice(1, scene.children.length - 7)
 
         var leftRnd = Math.random();
         //leftRnd = 1;
@@ -92,7 +93,6 @@ Maze.prototype = {
 
         mesh.position.set(position[0],position[1],position[2]);
         mesh.rotation.set(rotation[0],rotation[1],rotation[2]);
-
         scene.add(mesh);
         
         return connectors;

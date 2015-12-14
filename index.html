@@ -14,6 +14,7 @@
             var renderer, scene, camera, maze, cameraControls, debugCameraControls, light, music, loadingManager;
 
             var afterEffects;
+            var currentMove;
             
             var nextMoveDrawn = false;
             var skipUpdate = true;
@@ -58,11 +59,11 @@
                 //      replace current random() with prob distribution for the 3 connectors (left, right, front)
                 //      (based on some music analysis procedure)
                 // TODO currently maze overlapping may happen (i.e. 3 left corners in a row), fix this when implementing prob distribution
-                addMazeConnectors([0,0,0],[0,0,0], [Math.random(),Math.random(), Math.random()]);
+                addInitialMazeConnectors([0,0,0],[0,0,0], [Math.random(),Math.random(), Math.random()]);
 
-                nextMove = cameraControls._getMoves()[0];
                 //console.log(nextMove);
-                cameraControls.move(nextMove[0][0], nextMove[0][1][1]);
+                currentMove = cameraControls.popQueue();
+                cameraControls.move(currentMove[0][0], currentMove[0][1][1]);
                 
                 music.play(buffering_music, music_playing);
                 music.mute();
@@ -93,16 +94,11 @@
                 TWEEN.update();
                 music.update();
                 if (cameraControls.nearNextMove() && !nextMoveDrawn) {
-                    console.log(cameraControls._getMoves());
-                    console.log("adding next connectors");
-                    nextMove = cameraControls.getNextMove();
-                    for (c in nextMove[1]) {
-                        addMazeConnectors(nextMove[1][c][0],nextMove[1][c][1],
-                                music.getProbDist());
-                    }
-                    
+                    //console.log(cameraControls._getMoves());
+                    //console.log("adding next connectors");
+                    addMazeConnectors(currentMove[1], music.getProbDist());
                     nextMoveDrawn = true;
-                    console.log(cameraControls._getMoves());
+                    //console.log(cameraControls._getMoves());
                 }
                 
                 if (!cameraControls.nearNextMove()) {
@@ -152,9 +148,8 @@
             
             // add two layers of connectors
             // two to avoid having non-generated maze before entering the corner
-            function addMazeConnectors(position, rotation, probs) {
+            function addInitialMazeConnectors(position, rotation, probs) {
                 var connectors = maze.next(position,rotation, probs);
-
                 var nextMoveIdx = Math.floor(Math.random()*connectors.length);
                 
                 for (c in connectors) {
@@ -165,6 +160,20 @@
 
                     nextConnectors = maze.next(connectors[c][0], connectors[c][1], probDistribution);
                     
+                    if (c == nextMoveIdx) {
+                        cameraControls.addMove([connectors[nextMoveIdx], nextConnectors]);
+                    }
+                }
+            }
+
+            function addMazeConnectors(connectors, musicProbDistribution) {
+                var nextMoveIdx = Math.floor(Math.random()*connectors.length);
+                for (c in connectors) {
+                    probDistribution = [0,0,0];
+                    if (c == nextMoveIdx) {
+                        probDistribution = musicProbDistribution;
+                    }
+                    nextConnectors = maze.next(connectors[c][0], connectors[c][1], probDistribution);
                     if (c == nextMoveIdx) {
                         cameraControls.addMove([connectors[nextMoveIdx], nextConnectors]);
                     }
