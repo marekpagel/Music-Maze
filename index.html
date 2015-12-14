@@ -93,7 +93,6 @@
                     return;
                 }
 
-                //TWEEN.update(music.currentTime);
                 TWEEN.update();
                 music.update();
                 debugCameraControls.move();
@@ -113,15 +112,6 @@
                 renderer.gammaOutput = true;
                 canvasContainer.appendChild(renderer.domElement);
                 afterEffects = new AfterEffects(renderer, width, height);
-            }
-
-            function test() {
-                var call = function() {
-                    console.log('at end of move');
-                }
-                console.log('eee');
-                cameraControls.move(new THREE.Vector3(10, 0, -10),
-                        new THREE.Vector3(0.5,0.5,0), call);
             }
 
             function initScene() {
@@ -191,6 +181,5 @@
         </div>
         <button onclick="music.mute()">mute</button>
         <button onclick="music.test()">test</button>
-        <button onclick="test()">test2</button>
     </body>
 </html>

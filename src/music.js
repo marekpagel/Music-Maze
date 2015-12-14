@@ -206,6 +206,10 @@ var Music = function() {
                 isMuted = true;
             }
 
+        },
+
+        get currentTime () {
+            return audio.currentTime;
         }
     };
 }
