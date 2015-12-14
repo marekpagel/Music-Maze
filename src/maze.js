@@ -11,7 +11,7 @@ Maze = function ( scene, textureLoader) {
     this.ceilingTexture = textureLoader.load(this.imgServer + "ceiling.jpg", function(texture) {
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
-        texture.repeat.set(2, 10);
+
         texture.needsUpdate = true;
     });
 
@@ -25,7 +25,6 @@ Maze = function ( scene, textureLoader) {
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
 
-        texture.repeat.set(1, 4);
         texture.needsUpdate = true;
     })
 };
@@ -127,7 +126,16 @@ Maze.prototype = {
     },
 
     _createWall: function(width, height, texture, position, rotation) {
+        w = width / 20;
+        h = height / 20;
         var geometry = new THREE.PlaneGeometry(width, height);
+        var uvs = geometry.faceVertexUvs[ 0 ];
+        uvs[ 0 ][ 0 ].set( 0, h );
+        uvs[ 0 ][ 1 ].set( 0, 0 );
+        uvs[ 0 ][ 2 ].set( w, h);
+        uvs[ 1 ][ 0 ].set( 0, 0 );
+        uvs[ 1 ][ 1 ].set( w, 0 );
+        uvs[ 1 ][ 2 ].set( w, h);
         var material = new THREE.MeshLambertMaterial({ map: texture });
         var wall = new THREE.Mesh(geometry, material);
 
