@@ -51,14 +51,17 @@ Maze.prototype = {
         if (leftRnd < prob[0]) {
             // Todo: place the connector at a random spot in [20,80] range
 
-            var leftWall1 = this._createLeftWall(self.len/5, [-10, 0, -5*self.len/5]);
-            var leftWall2 = this._createLeftWall(3*self.len/5, [-10, 0, -2*self.len/5]);
+            var leftWall1 = this._createLeftWall(self.len/5,
+                    new THREE.Vector3(-10, 0, -5*self.len/5));
+            var leftWall2 = this._createLeftWall(3*self.len/5,
+                    new THREE.Vector3(-10, 0, -2*self.len/5));
             mesh.add(leftWall2);
             mesh.add(leftWall1);
 
             connectors.push(this._getConnector(position, rotation, -4*self.len/5, halfPi));
         } else {
-            var leftWall = this._createLeftWall(self.len, [-10, 0, -60]);
+            var leftWall = this._createLeftWall(self.len,
+                    new THREE.Vector3(-10, 0, -60));
             mesh.add(leftWall);
         }
 
@@ -66,14 +69,17 @@ Maze.prototype = {
         if (rightRnd < prob[1]) {
             // Todo: place the connector at a random spot in [20,80] range
 
-            var rightWall1 = this._createRightWall(self.len/5, [10, 0, -5*self.len/5]);
-            var rightWall2 = this._createRightWall(3*self.len/5, [10, 0,-2*self.len/5]);
+            var rightWall1 = this._createRightWall(self.len/5,
+                    new THREE.Vector3(10, 0, -5*self.len/5));
+            var rightWall2 = this._createRightWall(3*self.len/5,
+                    new THREE.Vector3(10, 0,-2*self.len/5));
             mesh.add(rightWall1);
             mesh.add(rightWall2);
 
             connectors.push(this._getConnector(position, rotation, -4*self.len/5, -halfPi));
         } else {
-            var rightWall = this._createRightWall(self.len, [10, 0, -60]);
+            var rightWall = this._createRightWall(self.len,
+                    new THREE.Vector3(10, 0, -60));
             mesh.add(rightWall);
         }
 
@@ -81,29 +87,39 @@ Maze.prototype = {
         if (frontRnd < prob[2] || (leftRnd >= prob[0] && rightRnd >= prob[1])) {
             connectors.push(this._getConnector(position, rotation, -5*self.len/5, 0));
         } else {
-            var backWall = this._createWall(self.width, self.width, self.wallTexture, [0, 0, -100], [0, 0, 0]);
+            var backWall = this._createWall(self.width, self.width, self.wallTexture,
+                    new THREE.Vector3(0, 0, -100),
+                    new THREE.Vector3());
             mesh.add(backWall);
         }
 
-        var ceiling = this._createWall(self.width, self.len, self.ceilingTexture, [0, 10, -60], [halfPi, 0, 0]);
-        var floorM = this._createWall(self.width, self.len, self.floorTexture, [0, -10, -60], [-halfPi, 0, 0]);
+        var ceiling = this._createWall(self.width, self.len, self.ceilingTexture,
+                new THREE.Vector3(0, 10, -60),
+                new THREE.Vector3(halfPi, 0, 0));
+        var floorM = this._createWall(self.width, self.len, self.floorTexture,
+                new THREE.Vector3(0, -10, -60),
+                new THREE.Vector3(-halfPi, 0, 0));
 
         mesh.add(ceiling);
         mesh.add(floorM);
 
-        mesh.position.set(position[0],position[1],position[2]);
-        mesh.rotation.set(rotation[0],rotation[1],rotation[2]);
+        mesh.position.copy(position);
+        mesh.rotation.setFromVector3(rotation);
         scene.add(mesh);
         
         return connectors;
     },
 
     _createLeftWall: function(width, position) {
-        return this._createWall(width, this.width, this.wallTexture, position, [0, halfPi, 0]);
+        return this._createWall(width, this.width, this.wallTexture, position,
+                new THREE.Vector3(0, halfPi, 0)
+        );
     },
 
     _createRightWall: function(width, position) {
-        return this._createWall(width, this.width, this.wallTexture, position, [0, -halfPi, 0]);
+        return this._createWall(width, this.width, this.wallTexture, position,
+                new THREE.Vector3(0, -halfPi, 0)
+        );
     },
 
     _createWall: function(width, height, texture, position, rotation) {
@@ -111,15 +127,21 @@ Maze.prototype = {
         var material = new THREE.MeshLambertMaterial({ map: texture });
         var wall = new THREE.Mesh(geometry, material);
 
-        wall.position.set(position[0], position[1], position[2]);
-        wall.rotation.set(rotation[0], rotation[1], rotation[2]);
+        wall.position.copy(position);
+        wall.rotation.setFromVector3(rotation);
 
         return wall;
     },
     
     _getConnector: function(position, rotation, newPosition, newAngle) {
         var c = new THREE.Vector3(0,0,newPosition);
-        c.applyAxisAngle(new THREE.Vector3(0, 1, 0), rotation[1]).add(new THREE.Vector3(position[0], position[1], position[2])).round();
-        return [c.toArray(), [rotation[0], rotation[1] + newAngle, rotation[2]]];
+        c.applyAxisAngle(new THREE.Vector3(0, 1, 0), rotation.y).add(position).round();
+        var rot = rotation.clone();
+        rot.copy(rotation);
+        rot.y += newAngle;
+        return {
+            position: c,
+            rotation: rot
+        };
     }    
 };

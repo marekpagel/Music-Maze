@@ -36,7 +36,7 @@ var Music = function() {
     var levelHistory = [];
     var length = 256;
     for(var i = 0; i < length; i++) {
-        levelHistory.push(0);
+        levelHistory.push(Math.random() * 255);
     }
 
     frequencyData = new Uint8Array(fftBinCount);
