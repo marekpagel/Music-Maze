@@ -23,14 +23,3 @@ The difference from L-systems is that we don't recursively build the whole tree 
 Click [here](http://marekpagel.github.io/Music-Maze/) for live demo.
 
 ![](http://fat.gfycat.com/CriminalShinyBaiji.gif)
-
-## TODO
-
-* [ ] Calculate & return connector coordinates
-* [ ] Randomize connector spots
-* [ ] Load & analyze music
-* [ ] Transform music analysis into probability distribution
-* [ ] Continuously generate maze on the fly
-* [ ] Implement collision control and avoidance
-* [ ] Improve graphics, UI
-* [ ] Docs
