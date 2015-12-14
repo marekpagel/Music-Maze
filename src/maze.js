@@ -49,16 +49,18 @@ Maze.prototype = {
         var leftRnd = Math.random();
         //leftRnd = 1;
         if (leftRnd < prob[0]) {
-            // Todo: place the connector at a random spot in [20,80] range
+            var spot = parseInt(self.len/5 + Math.random() * 3 * self.len/5);
+            var sl = spot - self.len/5;
+            var sr = spot + self.len/5;
+            var leftWall1 = this._createLeftWall(sl,
+                    new THREE.Vector3(-10, 0, -self.len/10 -sl/2));
+            var leftWall2 = this._createLeftWall(self.len - sr + self.len/5,
+                    new THREE.Vector3(-10, 0, -self.len + (self.len - sr) / 2));
 
-            var leftWall1 = this._createLeftWall(self.len/5,
-                    new THREE.Vector3(-10, 0, -5*self.len/5));
-            var leftWall2 = this._createLeftWall(3*self.len/5,
-                    new THREE.Vector3(-10, 0, -2*self.len/5));
-            mesh.add(leftWall2);
             mesh.add(leftWall1);
+            mesh.add(leftWall2);
 
-            connectors.push(this._getConnector(position, rotation, -4*self.len/5, halfPi));
+            connectors.push(this._getConnector(position, rotation, -spot, halfPi));
         } else {
             var leftWall = this._createLeftWall(self.len,
                     new THREE.Vector3(-10, 0, -60));
@@ -67,16 +69,18 @@ Maze.prototype = {
 
         var rightRnd = Math.random();
         if (rightRnd < prob[1]) {
-            // Todo: place the connector at a random spot in [20,80] range
+            var spot = parseInt(self.len/5 + Math.random() * 3 * self.len/5);
+            var sl = spot - self.len/5;
+            var sr = spot + self.len/5;
+            var rightWall1 = this._createRightWall(sl,
+                    new THREE.Vector3(10, 0, -self.len/10 -sl/2));
+            var rightWall2 = this._createRightWall(self.len - sr + self.len/5,
+                    new THREE.Vector3(10, 0, -self.len + (self.len - sr) / 2));
 
-            var rightWall1 = this._createRightWall(self.len/5,
-                    new THREE.Vector3(10, 0, -5*self.len/5));
-            var rightWall2 = this._createRightWall(3*self.len/5,
-                    new THREE.Vector3(10, 0,-2*self.len/5));
             mesh.add(rightWall1);
             mesh.add(rightWall2);
 
-            connectors.push(this._getConnector(position, rotation, -4*self.len/5, -halfPi));
+            connectors.push(this._getConnector(position, rotation, -spot, -halfPi));
         } else {
             var rightWall = this._createRightWall(self.len,
                     new THREE.Vector3(10, 0, -60));
