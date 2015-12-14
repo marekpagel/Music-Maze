@@ -57,6 +57,7 @@
             function loadCompleted() {
                 var loader = document.getElementById('loader');
                 loader.parentNode.removeChild(loader);
+                muteToggleBtn.style.visibility = "visible";
 
                 initRenderer();
 
