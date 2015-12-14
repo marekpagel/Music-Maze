@@ -27,3 +27,8 @@ canvas {
 	left: 10px;
     visibility: hidden;
 }
+
+button {
+    position: absolute;
+    left: 5px;
+}
