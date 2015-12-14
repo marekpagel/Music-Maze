@@ -1,8 +1,15 @@
 var Music = function() {
     var analyser, frequencyData, audioSrc, audioCtx, lastcolor = 0.45, isMuted = false, gainNode, aheadAnalyser, delayNode;
 
-    var beatCutOff = 0;
-    var beatTime = 0;
+    var beatParams = {
+        beatCutOff:  0,
+        beatTime:  0
+    };
+
+    var aheadBeatParams = {
+        beatCutOff:  0,
+        beatTime:  0
+    };
 
     var rgbSplit = false;
     var rgbSplitAmount = new THREE.Vector2(0,0);
@@ -99,14 +106,7 @@ var Music = function() {
 
         update: function() {
             aheadAnalyser.getByteFrequencyData(frequencyData);
-
-            // get the average volume level
-            var sum = 0;
-            for(var j = 0; j < fftBinCount; j++) {
-                sum += frequencyData[j];
-            }
-
-            level = sum / fftBinCount;
+            var level = this._calc_level();
 
             levelHistory.push(level);
             levelHistory.shift(1);
@@ -115,33 +115,47 @@ var Music = function() {
 
             this.updateLightColor();
 
+            level = this._calc_level();
+            var onBeat = function() {
+                rgbSplit = true;
+            };
+
+            var offBeat = function() {
+                rgbSplit = false;
+            };
+            this._detectBeat(level, beatParams, onBeat, offBeat);
+            if (rgbSplit) {
+                this.updateRgbSplit();
+            } else {
+                rgbSplitAmount.set(0,0);
+            }
+        },
+
+        _calc_level: function(anal) {
             // get the average volume level
             var sum = 0;
             for(var j = 0; j < fftBinCount; j++) {
                 sum += frequencyData[j];
             }
 
-            level = sum / fftBinCount;
+            return sum / 128;
+        },
 
+        _detectBeat: function(level, params, onBeat, offBeat) {
             //detect peaks (beats)
-            if (level > beatCutOff && level > 30){
-                beatCutOff = level *1.1;
-                beatTime = 0;
-                rgbSplit = true;
+            if (level > params.beatCutOff && level > 30){
+                params.beatCutOff = level *1.1;
+                params.beatTime = 0;
+                onBeat();
             }else{
-                if (beatTime <= 20){
-                    beatTime ++;
+                if (params.beatTime <= 20){
+                    params.beatTime ++;
                 }else{
-                    rgbSplit = false;
-                    beatCutOff *= 0.97;
-                    beatCutOff = Math.max(beatCutOff,30);
+                    if (typeof offBeat !== 'undefined')
+                        offBeat();
+                    params.beatCutOff *= 0.97;
+                    params.beatCutOff = Math.max(params.beatCutOff,30);
                 }
-            }
-
-            if (rgbSplit) {
-                this.updateRgbSplit();
-            } else {
-                rgbSplitAmount.set(0,0);
             }
         },
 
@@ -150,15 +164,31 @@ var Music = function() {
             for (i = 0; i < 3; ++i) {
                 dist[i] = 0;
             }
+
             var i = 0;
+
+            var onBeat = function() {
+                dist[0] += 1;
+            };
+
             for (; i < length/3; ++i) {
-                dist[0] += levelHistory[i];
+                this._detectBeat(levelHistory[i], aheadBeatParams, onBeat);
             }
+
+            onBeat = function() {
+                dist[1] += 1;
+            };
+
             for (; i < 2*(length/3); ++i) {
-                dist[1] += levelHistory[i];
+                this._detectBeat(levelHistory[i], aheadBeatParams, onBeat);
             }
+
+            onBeat = function() {
+                dist[2] += 1;
+            };
+
             for (; i < length; ++i) {
-                dist[2] += levelHistory[i];
+                this._detectBeat(levelHistory[i], aheadBeatParams, onBeat);
             }
             var sum = dist[0] + dist[1] + dist[2];
             for (i = 0; i < 3; ++i) {
