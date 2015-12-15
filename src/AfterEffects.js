@@ -29,6 +29,8 @@ AfterEffects = function(renderer, width, height) {
 AfterEffects.prototype.render = function(scene, camera, amount) {
     this.renderer.render(scene, camera, this.target, true);
     this.quad.material.uniforms.tex.value = this.target;
+    amount.x /= this.target.width;
+    amount.y /= this.target.height;
     this.quad.material.uniforms.amount.value = amount;
     this.renderer.render(this.scene, this.camera);
 }

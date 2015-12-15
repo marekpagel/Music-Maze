@@ -86,15 +86,12 @@ var Music = function() {
         },
 
         updateRgbSplit: function() {
-            // TODO: use something more reasonable
-            // At first I thought that RGB split should happen with BASS.
-            // So we need to also set a threshold and so on.
             analyser.getByteFrequencyData(frequencyData);
             var sum = 0;
             for (var i = 0; i < 128; ++i) {
                 sum += frequencyData[i];
             }
-            rgbSplitAmount.set(sum / (4096*255), 0);
+            rgbSplitAmount.set(sum / (4*255), 0);
         },
 
         rgbSplitAmount: rgbSplitAmount,
