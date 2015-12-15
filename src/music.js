@@ -82,7 +82,7 @@ var Music = function() {
             }
 
             lastcolor = aplifiedAmbientColor;
-            this.lightColor = color;
+            this.lightColor = [aplifiedAmbientColor, aplifiedAmbientColor, aplifiedAmbientColor];
         },
 
         updateRgbSplit: function() {
@@ -140,18 +140,18 @@ var Music = function() {
 
         _detectBeat: function(level, params, onBeat, offBeat) {
             //detect peaks (beats)
-            if (level > params.beatCutOff && level > 30){
+            if (level > params.beatCutOff && level > 40){
                 params.beatCutOff = level *1.1;
                 params.beatTime = 0;
                 onBeat();
             }else{
-                if (params.beatTime <= 20){
+                if (params.beatTime <= 17){
                     params.beatTime ++;
                 }else{
                     if (typeof offBeat !== 'undefined')
                         offBeat();
-                    params.beatCutOff *= 0.97;
-                    params.beatCutOff = Math.max(params.beatCutOff,30);
+                    params.beatCutOff *= 0.95;
+                    params.beatCutOff = Math.max(params.beatCutOff,40);
                 }
             }
         },
