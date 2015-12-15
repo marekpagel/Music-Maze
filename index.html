@@ -13,7 +13,7 @@
         <script type="text/javascript">
 
             var renderer, scene, camera, maze, cameraControls, debugCameraControls, light, music, loadingManager;
-
+            var stop = false;
             var afterEffects;
             var connectors;
             var nextMove;
@@ -103,24 +103,26 @@
             }
 
             function draw() {
-                requestAnimationFrame(draw);
+                if(!stop) { 
+                    requestAnimationFrame(draw);
 
-                if (skipUpdate) {
-                    // TODO do not do regular stuff
-                    // Also might display something to the user
-                    // However with a good internet, might never happen;
-                    return;
+                    if (skipUpdate) {
+                        // TODO do not do regular stuff
+                        // Also might display something to the user
+                        // However with a good internet, might never happen;
+                        return;
+                    }
+
+                    TWEEN.update();
+                    music.update();
+                    debugCameraControls.move();
+
+                    nextColor = music.lightColor;
+                    light.color.setRGB(nextColor[0], nextColor[1], nextColor[2]);
+
+                    afterEffects.render(scene, camera, music.rgbSplitAmount);
+                    //renderer.render(scene, camera);
                 }
-
-                TWEEN.update();
-                music.update();
-                debugCameraControls.move();
-
-                nextColor = music.lightColor;
-                light.color.setRGB(nextColor[0], nextColor[1], nextColor[2]);
-
-                afterEffects.render(scene, camera, music.rgbSplitAmount);
-                //renderer.render(scene, camera);
             }
 
             function initRenderer() {
@@ -162,6 +164,12 @@
                 cleanScene(3)
                 // mod10 just so in theory of infinite maze, it won't overflow
                 counter = (counter + 1) % 10
+
+                if (connectors == null) {
+                    TWEEN.removeAll();
+                    stop = true;
+                    return;
+                }
                 var nextMoveIdx = Math.floor(Math.random()*connectors.length);
 
                 var updatedConnectors = null;
