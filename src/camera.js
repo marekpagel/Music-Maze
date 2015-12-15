@@ -10,7 +10,8 @@ var PathCamera = function(camera) {
             if (!rot.equals(self.camera.rotation)) {
                 var rotateTween = new TWEEN.Tween(self.camera.rotation)
                     .to(rot, 1000)
-                    .onComplete(callback);
+                    .onComplete(callback)
+                    .easing(TWEEN.Easing.Quadratic.InOut);
 
                 moveTween.chain(rotateTween);
             } else {
