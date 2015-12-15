@@ -48,4 +48,4 @@ details away.
 
 Click [here](http://marekpagel.github.io/Music-Maze/) for live demo.
 
-![](http://fat.gfycat.com/CriminalShinyBaiji.gif)
+![demo](https://cloud.githubusercontent.com/assets/195271/11809061/df209ef0-a32c-11e5-8962-4ef5ce759aa6.gif)
