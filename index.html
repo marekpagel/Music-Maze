@@ -16,6 +16,7 @@
 
             var afterEffects;
             var connectors;
+            var nextMove;
             var skipUpdate = true;
 
             var width = window.innerWidth;
@@ -74,7 +75,9 @@
                 //      (based on some music analysis procedure)
                 // TODO currently maze overlapping may happen (i.e. 3 left corners in a row), fix this when implementing prob distribution
                 connectors = maze.next(new THREE.Vector3(),new THREE.Vector3(), music.getProbDist());
-
+                var next = addMazeConnectors(connectors, music.getProbDist());
+                nextMove = next.selection;
+                connectors = next.connectors;
                 moveUpdate();
                 
                 music.play(buffering_music, music_playing);
@@ -84,9 +87,9 @@
 
             function moveUpdate() {
                 var next = addMazeConnectors(connectors, music.getProbDist());
-                var move = next.selection
                 connectors = next.connectors;
-                cameraControls.move(move.position, move.rotation, moveUpdate);
+                cameraControls.move(nextMove.position, nextMove.rotation, moveUpdate);
+                nextMove = next.selection
             }
 
             function buffering_music() {
@@ -156,7 +159,7 @@
             // add two layers of connectors
             // two to avoid having non-generated maze before entering the corner
             function addMazeConnectors(connectors, musicProbDistribution) {
-                cleanScene(2)
+                cleanScene(3)
                 // mod10 just so in theory of infinite maze, it won't overflow
                 counter = (counter + 1) % 10
                 var nextMoveIdx = Math.floor(Math.random()*connectors.length);
