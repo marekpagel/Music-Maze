@@ -53,7 +53,11 @@
                     }
                 };*/
                 muteToggleBtn = document.getElementById('muteToggle');
-                music.prepareMusic('https://raw.githubusercontent.com/marekpagel/Music-Maze/master/music/sample1.ogg', loadingManager);
+                var sound = location.search.split('url=')[1];
+                if (sound === undefined) {
+                    sound = 'https://raw.githubusercontent.com/marekpagel/Music-Maze/master/music/sample1.ogg';
+                }
+                music.prepareMusic(sound, loadingManager);
                 var textureLoader = new THREE.TextureLoader(loadingManager);
                 textureLoader.crossOrigin = 'Anonymous';
 
