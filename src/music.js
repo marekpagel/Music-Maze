@@ -81,6 +81,8 @@ var Music = function() {
                 color = [0.3, 0.3, 0.3];
             }
 
+            aplifiedAmbientColor *= 0.5;
+
             lastcolor = aplifiedAmbientColor;
             this.lightColor = [aplifiedAmbientColor, aplifiedAmbientColor, aplifiedAmbientColor];
         },

@@ -98,10 +98,16 @@ Maze.prototype = {
 
         var ceiling = this._createWall(self.width, self.len, self.ceilingTexture,
                 new THREE.Vector3(0, 10, -60),
-                new THREE.Vector3(halfPi, 0, 0));
+                new THREE.Vector3(halfPi, 0, 0), true);
         var floorM = this._createWall(self.width, self.len, self.floorTexture,
                 new THREE.Vector3(0, -10, -60),
                 new THREE.Vector3(-halfPi, 0, 0));
+
+
+        var light = new THREE.PointLight( 0x00ff00, 1, 30 );
+        light.position.set( 0, 9, -self.len/2);
+        mesh.add( light );
+        mesh.light = light;
 
         mesh.add(ceiling);
         mesh.add(floorM);
@@ -125,7 +131,7 @@ Maze.prototype = {
         );
     },
 
-    _createWall: function(width, height, texture, position, rotation) {
+    _createWall: function(width, height, texture, position, rotation, phong) {
         w = width / 20;
         h = height / 20;
 
@@ -137,7 +143,13 @@ Maze.prototype = {
         uvs[ 1 ][ 0 ].set( 0, 0 );
         uvs[ 1 ][ 1 ].set( w, 0 );
         uvs[ 1 ][ 2 ].set( w, h);
-        var material = new THREE.MeshLambertMaterial({ map: texture });
+        var material = null;
+        if (phong == true) {
+            material = new THREE.MeshPhongMaterial({ map: texture });
+        } else {
+            material = new THREE.MeshLambertMaterial({ map: texture });
+        }
+
         var wall = new THREE.Mesh(geometry, material);
 
         wall.position.copy(position);

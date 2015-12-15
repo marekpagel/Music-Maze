@@ -124,6 +124,17 @@
                     nextColor = music.lightColor;
                     light.color.setRGB(nextColor[0], nextColor[1], nextColor[2]);
 
+                    var lightInt = 1 - nextColor[0];
+                    if (nextColor[0] < 0.1) {
+                        lightInt = 0;
+                    } else {
+                        lightInt = 1;
+                    }
+
+                    for (var i = 1; i < scene.children.length; ++i) {
+                        scene.children[i].light.intensity = 1 - lightInt;
+                    }
+
                     afterEffects.render(scene, camera, music.rgbSplitAmount);
                     //renderer.render(scene, camera);
                 }
